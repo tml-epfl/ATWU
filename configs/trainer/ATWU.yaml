@@ -1,0 +1,55 @@
+defaults:
+  - finetune
+
+handler: ATWU
+
+args:
+  learning_rate: 1e-5
+  num_train_epochs: 5
+
+method_args:
+  alpha: 1.0
+  gamma: 1.0
+  beta: 5.0
+
+  # When true, per-token CE in the cache uses HF's canonical (N,V) layout (reproducible
+  # vs GradDiff/WGA/SatImp). False (default) keeps the legacy (B,V,T-1) layout so existing
+  # TOFU runs are byte-identical.
+  canonical_ce: false
+
+  scorer:
+    _target_: scorers.LearnedScorer
+    cfg:
+      _target_: scorers.ScorerConfig
+      input_dimension: 2048
+      layers: 1
+      scale_factor: 1.0
+      use_sigmoid: true
+      zero_init: true
+      use_bias: true
+    pretrained_path: null
+
+  scorer_pretrain:
+    _target_: trainer.unlearn.ATWU.ScorerPretrainConfig
+    epochs: 0
+    steps: null          # if set (>0), pretrain this many steps; overrides `epochs`
+    lr: 5.0e-2
+    freeze_after: false
+    scorer_save_every_steps: null
+
+  scorer_trainer:
+    _target_: trainer.unlearn.Scorer.ScorerTrainerATWU
+    _partial_: true
+    lambda_entropy: 1.0
+    lambda_population: 1.0
+    budget: 0.2
+    lambda_l2: 0.01
+    beta: ${..beta}
+    optim_cfg:
+      _target_: trainer.unlearn.Scorer.ScorerOptimConfig
+      lr: 5.0e-2
+      weight_decay: 1.0e-4
+      momentum: 0.9
+      update_every_n_steps: 10
+      grad_clip: 1.0
+      loss_reduction: mean

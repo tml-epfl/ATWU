@@ -1,0 +1,25 @@
+# @package eval.paraphrase.metrics.forget_quality
+defaults:
+  - ../../../data/datasets@datasets: TOFU_para_forget_eval
+
+handler: forget_quality
+output_dir: ${paths.output_dir}/paraphrase_forget
+
+# Task identifier
+eval_task: forget
+
+max_samples: 100
+# max_samples: 10
+
+# In-context retention (ICR) dataset — retain examples used as few-shot
+# prompts when evaluating forget quality. Must have 'question' and 'answer' columns.
+icr:
+  hf_args:
+    path: "ngiorgos/TOFU"
+    name: "qa"
+    split: "${eval.paraphrase.retain_split}"
+
+# Inherit shared settings from parent
+judge: ${eval.paraphrase.judge}
+generation: ${eval.paraphrase.generation}
+output_base: ${eval.paraphrase.output}

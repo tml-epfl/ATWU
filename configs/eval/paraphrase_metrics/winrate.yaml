@@ -1,0 +1,18 @@
+# @package eval.paraphrase.metrics.winrate
+# Note: This metric doesn't load a dataset directly
+# It compares results from previous repetitiveness evaluations
+
+handler: winrate
+gemini_api_key: null  # Set via GOOGLE_API_KEY environment variable
+
+# Task identifier
+eval_task: winrate
+
+# Inherit shared settings from parent
+judge: ${eval.paraphrase.judge}
+output_base: ${eval.paraphrase.output}
+
+# Path to pre-computed baseline (pretrained) repetitiveness results.
+# When null, defaults to <repetitiveness_dir>/pretrained.jsonl.
+# Set this to reuse a single baseline across multiple unlearned model evaluations.
+baseline_path: null

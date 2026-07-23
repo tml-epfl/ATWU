@@ -1,0 +1,23 @@
+# @package eval.tofu
+# NOTE: the above line is not a comment, but sets the package for config. See https://hydra.cc/docs/upgrades/0.11_to_1.0/adding_a_package_directive/
+#
+# Slim TOFU eval used for the paper reproduction: extraction strength on the
+# forget and retain sets, plus model utility. Use `eval=[tofu]` instead for
+# the full upstream TOFU suite.
+
+defaults:
+  - tofu_metrics:
+    - extraction_strength
+    - retain_extraction_strength
+    - model_utility
+
+handler: TOFUEvaluator
+output_dir: ${paths.output_dir} # set to default eval directory
+metrics: {} # lists a mapping from each evaluation metric to its config
+# populated through the first (@package) line in each metric config
+overwrite: false
+forget_split: forget10
+holdout_split: holdout10
+retain_logs_path: null
+question_key: "question" # Specifies which key to use during forget and retain evaluations (e.g., "question" or "paraphrased_question")
+batch_size: 32

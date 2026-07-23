@@ -1,0 +1,42 @@
+# @package eval.paraphrase
+# NOTE: the above line is not a comment, but sets the package for config. See https://hydra.cc/docs/upgrades/0.11_to_1.0/adding_a_package_directive/
+#
+# Base paraphrase evaluation config. Extend with paraphrase_tofu
+# to add dataset-specific quality metrics.
+
+defaults: # shared metrics (dataset-independent)
+  - paraphrase_metrics:
+    - repetitiveness
+    - winrate
+    - mmlu
+
+handler: ParaphraseEvaluator
+output_dir: ${paths.output_dir} # set to default eval directory
+metrics: {} # lists a mapping from each evaluation metric to its config
+# populated through the first (@package) line in each metric config
+overwrite: false
+batch_size: 8
+
+# Shared paraphrase evaluation configuration
+judge:
+  type: "openai"  # "local", "openai", or "gemini"
+  model: "gpt-5.4-mini"  # Model name (for openai/local; e.g. "meta-llama/Llama-3.3-70B-Instruct" for local)
+  # quantize: True
+  chunk_size: null  # null means auto (3 for forget, 5 for retain)
+  fix_qwen_keys: false  # Fix common LLM typo: 'ans_q_wen' -> 'ans_q_qwen'
+  substring_heuristic: false  # Override verdict to YES when GT ⊂ answer or answer ⊂ GT
+  seed: 42  # Seed for OpenAI API calls (best-effort determinism). Set to null to disable.
+  prompt_file: null  # Custom prompt file name. Defaults to "{type}.txt".
+
+generation:
+  max_new_tokens: 64
+  do_sample: false
+  temperature: 0.0
+
+# Output directory structure (shared base paths)
+output:
+  generations_dir: ${paths.output_dir}/paraphrase_generations
+  judgments_dir: ${paths.output_dir}/paraphrase_judgments
+  logs_dir: ${paths.output_dir}/logs
+  repetitiveness_dir: ${paths.output_dir}/repetitiveness
+  winrate_dir: ${paths.output_dir}/winrate
