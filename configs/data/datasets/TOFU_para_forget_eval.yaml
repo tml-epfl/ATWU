@@ -1,0 +1,14 @@
+TOFU_para_forget_eval:
+  handler: ParaphraseQADataset
+  args:
+    hf_args:
+      path: "ngiorgos/TOFU"
+      name: "qa_with_paraphrases"
+      split: "${eval.paraphrase.forget_split}"
+    question_key: "question"
+    answer_key: "answer"
+    paraphrases_key: "paraphrases"
+    num_train_paraphrases: 5
+    eval_mode: true
+    predict_with_generate: true
+    max_length: 512

@@ -1,0 +1,12 @@
+# @package eval.paraphrase
+# TOFU paraphrase evaluation — extends base paraphrase config with TOFU quality metrics.
+
+defaults:
+  - paraphrase
+  - paraphrase_metrics:
+    - TOFU/forget_quality
+    - TOFU/retain_quality
+
+# TOFU-specific splits
+forget_split: forget10
+retain_split: retain90

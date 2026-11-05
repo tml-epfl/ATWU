@@ -1,0 +1,6 @@
+# @package eval.paraphrase.metrics.mmlu
+
+handler: mmlu
+batch_size: 16
+system_instruction: null
+apply_chat_template: false

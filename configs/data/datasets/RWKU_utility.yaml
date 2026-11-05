@@ -1,0 +1,7 @@
+RWKU_utility:
+  handler: HFDataset
+  args:
+    hf_args:
+      path: "jinzhuoran/RWKU"
+      name: "utility_fluency"
+      split: "test"

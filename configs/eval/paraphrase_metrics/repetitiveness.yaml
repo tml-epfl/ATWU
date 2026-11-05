@@ -1,0 +1,19 @@
+# @package eval.paraphrase.metrics.repetitiveness
+defaults:
+  - ../../data/datasets@datasets: RWKU_utility
+
+handler: repetitiveness
+batch_size: ${eval.paraphrase.batch_size}
+num_samples: 1000
+# num_samples: 100
+output_dir: ${paths.output_dir}/repetitiveness
+
+# Set to override the global system prompt for this metric only
+system_prompt: null
+
+# Task identifier
+eval_task: repet
+
+# Inherit shared settings from parent
+generation: ${eval.paraphrase.generation}
+output_base: ${eval.paraphrase.output}

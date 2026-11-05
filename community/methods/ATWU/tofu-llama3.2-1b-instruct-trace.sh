@@ -1,0 +1,112 @@
+#!/bin/bash
+# ATWU — Scorer Ablation: trace scorer through training
+# Saves scorer at init, every $SAVE_EVERY_STEPS model steps, and at the end.
+# Model: Llama-3.2-1B-Instruct | forget split passed as $1 (forget01|forget05|forget10)
+#
+# Usage:
+#   bash community/methods/ATWU/tofu-llama3.2-1b-instruct-trace.sh forget10
+#   GPU=1 SAVE_EVERY_STEPS=10 bash community/methods/ATWU/tofu-llama3.2-1b-instruct-trace.sh forget10
+
+set -a
+source .env
+set +a
+
+export MASTER_PORT=$(python -c "import socket; s=socket.socket(); s.bind(('', 0)); print(s.getsockname()[1]); s.close()")
+
+# ── Args ──
+forget_split="${1:-forget10}"
+case "$forget_split" in
+    forget01) retain_split="retain99"; holdout_split="holdout01" ;;
+    forget05) retain_split="retain95"; holdout_split="holdout05" ;;
+    forget10) retain_split="retain90"; holdout_split="holdout10" ;;
+    *) echo "Unknown forget_split: $forget_split (expected forget01|forget05|forget10)"; exit 1 ;;
+esac
+
+# ── Constants ──
+model="Llama-3.2-1B-Instruct"
+GPU=${GPU:-0}
+num_epochs=10
+batch_size=8
+grad_accum=4
+input_dim=2048
+
+# ── Hyperparameter source ──
+# Priority: $SUMMARY_JSON (explicit) > fresh tuning output (scripts/hpsearch_atwu.py)
+# > frozen paper params (scripts/selected_tofu.json, Table 6) — so running the
+# tuning first is optional.
+TUNED_JSON="hyperparam/TOFU_pop15/bayesian_summary.json"
+if [[ -z "${SUMMARY_JSON:-}" ]]; then
+    if [[ -f "$TUNED_JSON" ]]; then
+        SUMMARY_JSON="$TUNED_JSON"
+    else
+        SUMMARY_JSON="scripts/selected_tofu.json"
+    fi
+fi
+echo "Reading hyperparameters from: ${SUMMARY_JSON}"
+HP_KEY="ATWU"
+MODEL_SIZE="1B"
+
+get_param() {
+    python3 - "$SUMMARY_JSON" "$1" "$2" "$MODEL_SIZE" <<'PY'
+import json, sys
+path, key, param, size = sys.argv[1:5]
+d = json.load(open(path))
+if "methods" in d:  # scripts/selected_tofu.json (frozen paper params)
+    m = d["methods"][key.removesuffix("_8B")]
+    print(m[f"lr_{size}"] if param == "lr" else m[param])
+else:               # hyperparam/*/bayesian_summary.json (tuning output)
+    print(d[key]["best_params"][param])
+PY
+}
+
+# ── Hyperparameters (override via env vars) ──
+ATWU_lr=${ATWU_lr:-$(get_param $HP_KEY lr)}
+ATWU_gamma=${ATWU_gamma:-$(get_param $HP_KEY gamma)}
+ATWU_alpha=${ATWU_alpha:-$(get_param $HP_KEY alpha)}
+ATWU_beta=${ATWU_beta:-$(get_param $HP_KEY beta)}
+ATWU_scorer_lr=${ATWU_scorer_lr:-$(get_param $HP_KEY scorer_lr)}
+
+update_every_n_steps=${UPDATE_EVERY_N_STEPS:-5}
+save_every_steps=${SAVE_EVERY_STEPS:-10}
+
+task_name="ATWU_TOFU/${model}/${forget_split}/ScorerAblations/trace"
+model_output="saves/unlearn/${task_name}"
+
+# ══════════════════════════════════════════
+#  1. Unlearn (with scorer checkpointing)
+# ══════════════════════════════════════════
+echo ""
+echo "============================================"
+echo " ATWU Scorer Ablation: trace — Unlearn (${forget_split})"
+echo "============================================"
+
+HYDRA_FULL_ERROR=1 CUDA_VISIBLE_DEVICES=$GPU \
+    python src/train.py --config-name=unlearn.yaml \
+    experiment=unlearn/tofu/default \
+    trainer=ATWU \
+    model=$model \
+    task_name=$task_name \
+    model.model_args.pretrained_model_name_or_path=open-unlearning/tofu_${model}_full \
+    +model.model_args.token=$HF_TOKEN \
+    +model.tokenizer_args.token=$HF_TOKEN \
+    ++model.model_args.device_map='auto' \
+    forget_split=$forget_split \
+    retain_split=$retain_split \
+    trainer.args.num_train_epochs=$num_epochs \
+    trainer.args.eval_on_start=false \
+    trainer.args.eval_strategy=no \
+    trainer.args.per_device_train_batch_size=$batch_size \
+    trainer.args.gradient_accumulation_steps=$grad_accum \
+    trainer.args.learning_rate=$ATWU_lr \
+    trainer.method_args.gamma=$ATWU_gamma \
+    trainer.method_args.alpha=$ATWU_alpha \
+    trainer.method_args.beta=$ATWU_beta \
+    trainer.method_args.scorer.cfg.input_dimension=$input_dim \
+    trainer.method_args.scorer_trainer.optim_cfg.lr=$ATWU_scorer_lr \
+    trainer.method_args.scorer_trainer.optim_cfg.update_every_n_steps=$update_every_n_steps \
+    +trainer.method_args.scorer_trainer.optim_cfg.scheduler=linear \
+    trainer.method_args.scorer_trainer.lambda_entropy=1 \
+    trainer.method_args.scorer_trainer.lambda_population=15 \
+    trainer.method_args.scorer_trainer.budget=0.2 \
+    trainer.method_args.scorer_trainer.lambda_l2=1 \
+    trainer.method_args.scorer_pretrain.scorer_save_every_steps=$save_every_steps

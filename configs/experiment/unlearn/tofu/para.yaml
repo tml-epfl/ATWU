@@ -1,0 +1,31 @@
+# @package _global_
+# TOFU Paraphrase Unlearning Experiment
+# Uses paraphrase datasets from ngiorgos/TOFU (qa_with_paraphrases)
+
+defaults:
+  - override /model: Llama-3.2-1B-Instruct
+  - override /trainer: GradAscent
+  - override /data: unlearn
+  - override /data/datasets@data.forget: TOFU_para_forget
+  - override /data/datasets@data.retain: TOFU_para_retain
+  - override /eval: null
+
+model:
+  model_args:
+    pretrained_model_name_or_path: open-unlearning/tofu_Llama-3.2-1B-Instruct_full
+
+data:
+  anchor: forget
+  forget:
+    TOFU_para_forget: {}
+  retain:
+    TOFU_para_retain: {}
+
+trainer:
+  args:
+    warmup_epochs: 1.0
+    learning_rate: 1e-5
+    weight_decay: 0.01
+    num_train_epochs: 10
+
+task_name: ???

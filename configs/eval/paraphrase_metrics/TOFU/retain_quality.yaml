@@ -1,0 +1,18 @@
+# @package eval.paraphrase.metrics.retain_quality
+defaults:
+  - ../../../data/datasets@datasets: TOFU_para_retain_eval
+
+handler: retain_quality
+output_dir: ${paths.output_dir}/paraphrase_retain
+
+# Task identifier
+eval_task: retain
+
+# Metric-specific settings
+max_samples: 450
+# max_samples: 10
+
+# Inherit shared settings from parent
+judge: ${eval.paraphrase.judge}
+generation: ${eval.paraphrase.generation}
+output_base: ${eval.paraphrase.output}
