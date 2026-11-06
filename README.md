@@ -1,258 +1,374 @@
 <div align="center">
 
-![*Open*Unlearning](assets/banner.png)
+# Learning What to Forget: Improving LLM Unlearning via Learned Token-Level Importance
 
-<h3><strong>An easily extensible framework unifying LLM unlearning evaluation benchmarks.</strong></h3>
+### Official implementation of **A**lternating **T**oken-**W**eighted **U**nlearning (**ATWU**)
 
-  <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-    <a href="https://arxiv.org/abs/2506.12618"><img src="https://img.shields.io/badge/arXiv-Report-b31b1b?logo=arxiv&logoColor=white" alt="arXiv Paper"/></a>
-    <a href="https://github.com/locuslab/open-unlearning"><img src="https://img.shields.io/github/stars/locuslab/open-unlearning?style=social" alt="GitHub Repo stars"/></a>
-    <a href="https://github.com/locuslab/open-unlearning/actions"><img src="https://github.com/locuslab/open-unlearning/actions/workflows/tests.yml/badge.svg" alt="Build Status"/></a>
-    <a href="https://huggingface.co/open-unlearning"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue" alt="HuggingFace 🤗"/></a>
-    <a href="https://github.com/locuslab/open-unlearning"><img src="https://img.shields.io/github/repo-size/locuslab/open-unlearning" alt="GitHub repo size"/></a>
-    <a href="https://github.com/locuslab/open-unlearning"><img src="https://img.shields.io/github/languages/top/locuslab/open-unlearning" alt="GitHub top language"/></a>
-    <a href="https://github.com/locuslab/open-unlearning/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License: MIT"/></a>
-  </div>
+**Gizem Yüce<sup>*</sup>, Giorgos Nikolaou<sup>*</sup>, Nicolas Flammarion**<br>
+EPFL · <sup>*</sup>Equal contribution
+
+[![arXiv](https://img.shields.io/badge/arXiv-2606.06320-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.06320)
+[![GitHub stars](https://img.shields.io/github/stars/tml-epfl/ATWU?style=flat&logo=github&logoColor=white)](https://github.com/tml-epfl/ATWU)
+[![Repo Size](https://img.shields.io/github/repo-size/tml-epfl/ATWU?logo=github&logoColor=white)](https://github.com/tml-epfl/ATWU)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![PyTorch 2.4.1](https://img.shields.io/badge/PyTorch-2.4.1-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 </div>
 
 ---
 
-## 📖 Overview
+Machine unlearning aims to remove targeted knowledge from a model while
+preserving its general capabilities. For autoregressive language models,
+however, not every token in a forget sample is equally relevant to the
+knowledge being removed.
 
-We provide efficient and streamlined implementations of the TOFU, MUSE and WMDP unlearning benchmarks while supporting 12+ unlearning methods, 5+ datasets, 10+ evaluation metrics, and 7+ LLM architectures. Each of these can be easily extended to incorporate more variants.
+We introduce **Alternating Token-Weighted Unlearning (ATWU)**, a lightweight
+framework that jointly learns token-level forget-specificity and updates the
+language model during unlearning. ATWU uses a small scorer over the model's
+hidden states to identify tokens whose forgetting interferes least with the
+retain objective. It requires no external token-level annotations or auxiliary
+language models.
 
+ATWU achieves state-of-the-art forget-retain trade-offs on **TOFU** and
+**RWKU**, while adding minimal computational overhead. Unless stated otherwise,
+this README and the `main` branch describe our **TOFU experiments**, which are
+implemented on top of
+[OpenUnlearning](https://github.com/locuslab/open-unlearning).
 
-We invite the LLM unlearning community to collaborate by adding new benchmarks, unlearning methods, datasets and evaluation metrics here to expand OpenUnlearning's features, gain feedback from wider usage and drive progress in the field.
+The RWKU implementation and the additional WMDP experiments are described
+separately at the end.
 
----
+## Setup
 
-> 📝 If you've found this repository or the models we've provided in [HuggingFace](https://huggingface.co/open-unlearning) useful, please cite our [technical report](https://arxiv.org/abs/2506.12618) (bibtex at [*Citing this work*](#-citing-this-work)).
-
----
-
-### 📢 Updates
-
-### [June 20, 2025]
-
-🚨 Our paper `OpenUnlearning: Accelerating LLM Unlearning via Unified Benchmarking of Methods and Metrics` is now out on [arXiv](https://arxiv.org/abs/2506.12618).
-
-🌟 **Highlights:**
-- A detailed technical report on OpenUnlearning covering the design, features, and implementation.
-- A meta-evaluation framework for benchmarking unlearning evaluations across 450+ models, open-sourced on HuggingFace 🤗: [TOFU Models w & w/o Knowledge](https://huggingface.co/collections/open-unlearning/tofu-models-w-and-w-o-knowledge-6861e4d935eb99ba162e55cd), [TOFU Unlearned Models](https://huggingface.co/collections/open-unlearning/tofu-unlearned-models-6860f6cf3fe35d0223d92e88).
-- Results benchmarking 8 diverse unlearning methods in one place using 10 evaluation metrics on TOFU.
-
-<details>
-<summary><b>Older Updates</b></summary>
-
-
-#### [May 19, 2025]
-
-- **More Methods!** Added support for unlearning methods [UNDIAL](https://aclanthology.org/2025.naacl-long.444/) and [AltPO](https://aclanthology.org/2025.coling-main.252/).
-
-#### [May 12, 2025]
-
-- **Another benchmark!** We now support running the [`WMDP`](https://wmdp.ai/) benchmark with its `Zephyr` task model.
-- **More evaluations!**  The [`lm-evaluation-harness`](https://github.com/EleutherAI/lm-evaluation-harness) toolkit has been integrated into OpenUnlearning, enabling WMDP evaluations and support for popular general LLM benchmarks, including MMLU, GSM8K, and others.
-
-#### [Apr 6, 2025]
-- **More Metrics!** Added 6 Membership Inference Attacks (MIA) (LOSS, ZLib, Reference, GradNorm, MinK, and MinK++), along with Extraction Strength (ES) and  Exact Memorization (EM) as additional evaluation metrics.
-- **More TOFU Evaluations!** Now includes a holdout set and supports MIA attack-based evaluation. You can now compute MUSE's privleak on TOFU.
-- **More Documentation!** [`docs/links.md`](docs/links.md) contains resources for each of the implemented features and other useful LLM unlearning resources.
-
-Be sure to run `python setup_data.py` immediately after merging the latest version. This is required to refresh the downloaded eval log files and ensure they're compatible with the latest evaluation metrics.
-
-#### [Mar 27, 2025]
-- **More Documentation: easy contributions and the leaderboard functionality**: We've updated the documentation to make contributing new unlearning methods and benchmarks much easier. Users can document additions better and also update a leaderboard with their results. See [this section](#-how-to-contribute) for details.
-
-#### [Mar 9, 2025]
-- **More Methods!** Added support for [RMU](https://arxiv.org/abs/2403.03218) (representation-engineering based unlearning).
-
-#### [Feb 27, 2025]  
-⚠️ **Repository Update**: This repo replaces the original TOFU codebase at [`github.com/locuslab/tofu`](https://github.com/locuslab/tofu), which is no longer maintained.
-
-</details>
-
----
-
-## 🗃️ Available Components
-
-We provide several variants for each of the components in the unlearning pipeline.
-
-| **Component**          | **Available Options** |
-|------------------------|----------------------|
-| **Benchmarks**        | [TOFU](https://arxiv.org/abs/2401.06121), [MUSE](https://muse-bench.github.io/), [WMDP](https://www.wmdp.ai/) |
-| **Unlearning Methods** | GradAscent, GradDiff, NPO, SimNPO, DPO, RMU, UNDIAL, AltPO, SatImp, WGA, CE-U, PDU |
-| **Evaluation Metrics** | Verbatim Probability, Verbatim ROUGE, Knowledge QA-ROUGE, Model Utility, Forget Quality, TruthRatio, Extraction Strength, Exact Memorization, 6 MIA attacks, [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) |
-| **Datasets**          | MUSE-News (BBC), MUSE-Books (Harry Potter), TOFU (different splits), WMDP-Bio, WMDP-Cyber |
-| **Model Families**    | TOFU: Llama-3.2, Llama-3.1, Llama-2; MUSE: Llama-2; Additional: Phi-3.5, Phi-1.5, Gemma, Zephyr |
-
----
-
-
-## 📌 Table of Contents
-- 📖 [Overview](#-overview)
-- 📢 [Updates](#-updates)
-- 🗃️ [Available Components](#%EF%B8%8F-available-components)
-- ⚡ [Quickstart](#-quickstart)
-- 🔄 [Updated TOFU benchmark](#-updated-tofu-benchmark)
-- 🧪 [Running Experiments](#-running-experiments)
-  - 🚀 [Perform Unlearning](#-perform-unlearning)
-  - 📊 [Perform an Evaluation](#-perform-an-evaluation)
-  - 📜 [Running Baseline Experiments](#-running-baseline-experiments)
-- ➕ [How to Contribute](#-how-to-contribute)
-- 📚 [Further Documentation](#-further-documentation)
-- 🔗 [Support & Contributors](#-support--contributors)
-- 📝 [Citing this work](#-citing-this-work)
-- 🤝 [Acknowledgements](#-acknowledgements)
-- 📄 [License](#-license)
-
----
-
-## ⚡ Quickstart
+Python 3.11 or newer and a CUDA-capable GPU are required. The paper experiments
+used Python 3.12.7 and NVIDIA A100-SXM4-80GB GPUs. The 1B TOFU experiments can
+run on smaller modern GPUs, while the 8B experiments require substantially more
+memory.
 
 ```bash
-# Environment setup
-conda create -n unlearning python=3.11
-conda activate unlearning
-pip install ".[lm-eval]"
+git clone https://github.com/tml-epfl/ATWU.git
+cd ATWU
+
+python -m venv .venv
+source .venv/bin/activate
+
+pip install --upgrade pip setuptools wheel
+pip install ".[lm-eval,paraphrase-judge,hpsearch]"
 pip install --no-build-isolation flash-attn==2.6.3
-
-# Data setup
-python setup_data.py --eval # saves/eval now contains evaluation results of the uploaded models
-# This downloads log files with evaluation results (including retain model logs)
-# into `saves/eval`, used for evaluating unlearning across supported benchmarks.
-# Additional datasets (e.g., WMDP) are supported — run below for options:
-# python setup_data.py --help
+pip install einops
 ```
 
----
-
-### 🔄 Updated TOFU benchmark
-
-We've updated Open-Unlearning's TOFU benchmark target models to use a wider variety of newer architectures with sizes varying from 1B to 8B. These include Llama 3.2 1B, Llama 3.2 3B, Llama 3.1 8B, and the original Llama-2 7B (re-created) target models from [the old version of TOFU](github.com/locuslab/tofu). 
-
-For each architecture, we have finetuned with four different splits of the TOFU datasets: `full`, `retain90`, `retain95`, `retain99`, for a total of 16 finetuned models. The first serves as the target (base model for unlearning) and the rest are retain models used to measure performance against for each forget split. These models are on [HuggingFace](`https://huggingface.co/collections/open-unlearning/tofu-new-models-67bcf636334ea81727573a9f0`) and the paths to these models can be set in the experimental configs or in command-line overrides.
-
----
-
-## 🧪 Running Experiments
-
-We provide an easily configurable interface for running evaluations by leveraging Hydra configs. For a more detailed documentation of aspects like running experiments, commonly overriden arguments, interfacing with configurations, distributed training and simple finetuning of models, refer [`docs/experiments.md`](docs/experiments.md).
-
-### 🚀 Perform Unlearning
-
-An example command for launching an unlearning process with `GradAscent` on the TOFU `forget10` split:
+Create a `.env` file in the repository root:
 
 ```bash
-python src/train.py --config-name=unlearn.yaml experiment=unlearn/tofu/default \
-  forget_split=forget10 retain_split=retain90 trainer=GradAscent task_name=SAMPLE_UNLEARN
+HF_TOKEN=hf_...          # Hugging Face access for gated Llama models
+OPENAI_API_KEY=sk-...    # Only needed for judge-based evaluations
 ```
 
-- `experiment`- Path to the Hydra config file [`configs/experiment/unlearn/tofu/default.yaml`](configs/experiment/unlearn/tofu/default.yaml) with default experimental settings for TOFU unlearning, e.g. train dataset, eval benchmark details, model paths etc..
-- `forget_split/retain_split`- Sets the forget and retain dataset splits.
-- `trainer`- Load [`configs/trainer/GradAscent.yaml`](configs/trainer/GradAscent.yaml) and override the unlearning method with the handler (see config) implemented in [`src/trainer/unlearn/grad_ascent.py`](src/trainer/unlearn/grad_ascent.py).
-
-### 📊 Perform an Evaluation
-
-An example command for launching a TOFU evaluation process on `forget10` split:
+The DPO baseline additionally requires:
 
 ```bash
-model=Llama-3.2-1B-Instruct
-python src/eval.py --config-name=eval.yaml experiment=eval/tofu/default \
-  model=${model} \
-  model.model_args.pretrained_model_name_or_path=open-unlearning/tofu_${model}_full \
-  retain_logs_path=saves/eval/tofu_${model}_retain90/TOFU_EVAL.json \
-  task_name=SAMPLE_EVAL
+python setup_data.py --idk
 ```
 
-- `experiment`- Path to the evaluation configuration [`configs/experiment/eval/tofu/default.yaml`](configs/experiment/eval/tofu/default.yaml).
-- `model`- Sets up the model and tokenizer configs for the `Llama-3.2-1B-Instruct` model.
-- `model.model_args.pretrained_model_name_or_path`- Overrides the default experiment config to evaluate a model from a HuggingFace ID (can use a local model checkpoint path as well).
-- `retain_logs_path`- Sets the path to the reference model eval logs that is needed to compute reference model based metrics like `forget_quality` in TOFU.
+## Reproducing the TOFU results
 
-For more details about creating and running evaluations, refer [`docs/evaluation.md`](docs/evaluation.md).
+The selected hyperparameters reported in the paper are provided in
+[`scripts/selected_tofu.json`](scripts/selected_tofu.json).
 
-
-### 📜 Running Baseline Experiments
-The scripts below execute standard baseline unlearning experiments on the TOFU and MUSE datasets, evaluated using their corresponding benchmarks. The expected results for these are in [`docs/repro.md`](docs/repro.md).
+To reproduce ATWU on Llama-3.2-1B-Instruct and the TOFU `forget10` split:
 
 ```bash
-bash scripts/tofu_unlearn.sh
-bash scripts/muse_unlearn.sh
+python scripts/reproduce_tofu.py \
+    --method ATWU \
+    --model 1B \
+    --forget-split forget10
 ```
 
-The above scripts are not tuned and uses default hyper parameter settings. We encourage you to tune your methods and add your final results in [`community/leaderboard.md`](community/leaderboard.md).
+The default evaluation includes TOFU forget/retain extraction strength, model
+utility, repetitiveness, and MMLU. To additionally run the API-based paraphrase
+quality and win-rate evaluations:
 
----
+```bash
+python scripts/reproduce_tofu.py \
+    --method ATWU \
+    --model 1B \
+    --forget-split forget10 \
+    --with-paraphrase
+```
 
-## ➕ How to Contribute
+The script supports:
 
-If you are interested in contributing to our work, please have a look at [`contributing.md`](docs/contributing.md) guide.
+| Option | Available values |
+|---|---|
+| Models | `1B`, `8B` |
+| Forget splits | `forget01`, `forget05`, `forget10` |
+| Methods | `GradDiff`, `DPO`, `NPO`, `SimNPO`, `JensUn`, `RMU`, `WGA`, `SatImp`, `ETW`, `ATWU` |
 
+For example, to reproduce a baseline:
 
-## 📚 Further Documentation
+```bash
+python scripts/reproduce_tofu.py \
+    --method NPO \
+    --model 8B \
+    --forget-split forget05
+```
 
-For more in-depth information on specific aspects of the framework, refer to the following documents:
+RMU was evaluated only on the 8B model and ETW only on the 1B model, matching
+the experiments in the paper. Outputs are written under:
 
-| **Documentation**                              | **Contains**                                                                                                       |
-|------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| [`docs/contributing.md`](docs/contributing.md)       | Instructions on how to add new methods, benchmarks, components such as trainers, benchmarks, metrics, models, datasets, etc.              |
-| [`docs/evaluation.md`](docs/evaluation.md)       | Detailed instructions on creating and running evaluation metrics and benchmarks.                                     |
-| [`docs/experiments.md`](docs/experiments.md)     | Guide on running experiments in various configurations and settings, including distributed training, fine-tuning, and overriding arguments. |
-| [`docs/hydra.md`](docs/hydra.md)                 | A short tutorial on Hydra features, Hydra is the configuration management package we use extensively.                                  |
-| [`community/leaderboard.md`](community/leaderboard.md)             | Reference results from various unlearning methods run using this framework on TOFU and MUSE benchmarks.              |
-| [`docs/links.md`](docs/links.md)             | List of all links to the research papers or other sources the implemented features are sourced from.              |
-| [`docs/repro.md`](docs/repro.md)            | Results are provided solely for reproducibility purposes, without any parameter tuning.             |
----
+```text
+saves/unlearn/TOFU_repro/<model>/<split>/<method>
+```
 
-## 🔗 Support & Contributors
+### Hyperparameter search
 
-Developed and maintained by Vineeth Dorna ([@Dornavineeth](https://github.com/Dornavineeth)) and Anmol Mekala ([@molereddy](https://github.com/molereddy)).
+Re-running the ATWU search is optional. The reproduction commands above use the
+frozen paper parameters by default.
 
-If you encounter any issues or have questions, feel free to raise an issue in the repository 🛠️.
+```bash
+# Full two-stage search: 1B search followed by learning-rate transfer to 8B
+python scripts/hpsearch_atwu.py --gpus 0
 
-## 📝 Citing this work
+# Run only the 1B search
+python scripts/hpsearch_atwu.py --gpus 0 --skip-phase2
+```
 
-If you use OpenUnlearning in your research, please make sure to cite our OpenUnlearning technical report, the TOFU and MUSE benchmarks.
+For the complete TOFU protocol, including win-rate baseline generation,
+bit-exact package versions, hardware details, and result consolidation, see
+[`community/methods/ATWU/REPRODUCE.md`](community/methods/ATWU/REPRODUCE.md).
+
+### TOFU ablations
+
+The sensitivity sweeps and scorer-transfer experiments are released on the
+[`tofu-ablations` branch](https://github.com/tml-epfl/ATWU/tree/tofu-ablations).
+See its
+[`TOFU_ABLATIONS.md`](https://github.com/tml-epfl/ATWU/blob/tofu-ablations/TOFU_ABLATIONS.md)
+for the complete reproduction procedure and reference results.
+
+## Other benchmarks
+
+### RWKU
+
+The code used for our RWKU experiments is **not included in this repository**.
+
+Rather than porting RWKU into the OpenUnlearning-based implementation used for
+our TOFU experiments, we adapted the
+[official RWKU codebase](https://github.com/jinzhuoran/RWKU) to support ATWU and
+the other methods evaluated in our paper. We encountered significant
+compatibility issues when attempting to integrate the RWKU pipeline into
+OpenUnlearning; the reverse direction--integrating ATWU and the additional
+baselines into the original RWKU codebase--was substantially more direct.
+
+Our adaptation adds:
+
+- ATWU and its learned token-level scorer;
+- retain-set training, which the upstream RWKU release does not provide;
+- GradDiff, SimNPO, JensUn, WGA, and SatImp; and
+- the common evaluation protocol used for our method comparisons.
+
+RWKU does not explicitly provide retain data. We therefore use a disjoint set
+of ten public figures as a surrogate retain set. Our main experiment performs
+10-target batch unlearning: a single run jointly removes knowledge about a
+fixed set of ten target figures using Phi-3-Mini-4k-Instruct.
+
+The exact target and retain construction, training procedure, hyperparameter
+search, baselines, and evaluation protocol are documented in the experimental
+details and appendices of the
+[paper](https://arxiv.org/abs/2606.06320). Because the corresponding adapted
+RWKU code is not distributed here, this repository does not provide RWKU
+reproduction commands.
+
+### WMDP
+
+The WMDP experiments and corpus-generation pipeline are released on the
+dedicated [`wmdp` branch](https://github.com/tml-epfl/ATWU/tree/wmdp). Switch
+to that branch before running the commands in this section:
+
+```bash
+git fetch origin
+git switch wmdp
+
+pip install -e ".[lm-eval,hpsearch,paraphrase-judge]"
+pip install --no-build-isolation flash-attn==2.6.3
+pip install einops
+```
+
+#### Why we construct a fixed corpus
+
+We distinguish the
+[WMDP evaluation benchmark](https://arxiv.org/abs/2403.03218) from the corpora
+used to perform unlearning. WMDP contains 3,668 multiple-choice questions,
+whereas its released forget corpora contain approximately 24,500 Bio documents
+and 1,000 Cyber documents. The benchmark does not define a canonical,
+method-independent training subset for a fixed unlearning budget.
+
+For example, the official Zephyr RMU reproduction alternates between Bio and
+Cyber for 150 updates with batch size 4, without first shuffling either corpus.
+It therefore consumes the first 300 documents from each domain--approximately
+1.2% of Bio but 30% of Cyber. This makes the training data dependent on dataset
+order. Implementations that shuffle or sample the corpora may consequently
+train on substantially different documents. In preliminary experiments in
+which the consumed subset changed with the seed, we observed significant
+variation across seeds for **every unlearning method**, with the effect most
+pronounced on WMDP-Bio. Document selection can therefore obscure differences
+between unlearning algorithms.
+
+To remove corpus identity as a hidden experimental variable, we construct a
+fixed and balanced corpus shared by every method and seed. Following the
+model-elicitation principle used by
+[RWKU](https://arxiv.org/abs/2406.10890), we prompt the target
+[Zephyr-7B-beta](https://arxiv.org/abs/2310.16944) checkpoint to verbalize its
+knowledge of public Bio and Cyber topics. This makes the unlearning objective
+operate on knowledge the target model can express, rather than on arbitrary
+documents it may not have internalized.
+
+The corpus contains:
+
+- 3,215 Bio forget passages;
+- 3,215 Cyber forget passages; and
+- 4,029 retain passages covering all 57 MMLU subjects.
+
+The generator targets 3,200 passages per forget domain and 4,000 retain
+passages. It checks the count after each batch of 48 generations, so it stops
+at the first batch that reaches the target and slightly overshoots it.
+
+Each training run uses a fixed subset of 2,400 passages per forget domain (150
+steps of 32 passages, alternating between domains), selected by a seed-0
+shuffle of the full file; the training seed changes only their order. The
+remaining 815 passages per domain are not used for training. Each forget
+passage is paired with a retain passage drawn without replacement from the
+shared retain file.
+
+The forget passages cover 12 high-level categories per domain, expanded into
+up to 50 technical subtopics per category (600 Bio, 596 Cyber) and expressed
+using eight expository framings. The retain corpus is generated by the same model and in the same
+style, preventing methods from separating forget and retain examples through
+superficial source or formatting differences.
+
+No WMDP question, answer, or answer choice is used during corpus generation.
+Evaluation remains unchanged on the standard WMDP multiple-choice questions.
+
+#### Generate the corpus
+
+We do not distribute the original generated corpora used in our experiments.
+Because they contain long-form material about cybersecurity and biological
+hazards, we chose not to directly release and further disseminate those
+documents. Instead, we release the prompts, frozen subtopics, filtering rules,
+and generation code so that researchers can construct a comparable corpus
+locally.
+
+The main results use the corpus produced by this generator. Repeated runs in
+the same software and hardware environment produce byte-identical files;
+identity across environments is not guaranteed. One limitation remains: the
+hyperparameters were selected earlier, on a preliminary corpus generated
+before the pipeline was made deterministic. That preliminary corpus is not
+released and cannot be reconstructed exactly.
+
+```bash
+python scripts/wmdp/generate_corpus.py
+python scripts/wmdp/generate_corpus.py --check
+```
+
+By default, generation uses the committed subtopics, a pinned Zephyr revision,
+seed 0, temperature 0.9, top-p 0.95, and a repetition penalty of 1.05. The
+outputs are:
+
+```text
+data/wmdp/generated/bio-forget.text.jsonl
+data/wmdp/generated/cyber-forget.text.jsonl
+data/wmdp/generated/general-retain.text.jsonl
+data/wmdp/generated/generation_manifest.json
+```
+
+To resample both the subtopics and passages:
+
+```bash
+python scripts/wmdp/generate_corpus.py --regenerate-subtopics
+```
+
+Using the committed frozen subtopics is recommended for generating the released
+reference corpus. Exact reconstruction of the original experimental corpus is
+not possible because that corpus is not distributed. The manifest records the
+model revision, package versions, GPU, generation parameters, and output
+hashes.
+
+#### Pipeline
+
+Every method goes through the same three steps:
+
+1. **Tune.** Run 20 Optuna trials at training seed 0, starting from the
+   method's initial parameters from preliminary sweeps.
+2. **Select.** Keep the trial with the highest search objective.
+3. **Evaluate.** Retrain the selected configuration with seeds 1, 2, and 3.
+
+#### Reproduce the main results
+
+Hyperparameters were selected on a preliminary model-generated corpus that is
+not released and cannot be reconstructed exactly. For each method, the top
+three search configurations were evaluated on seeds 0, 1, and 2 on that corpus,
+and the resulting winner was frozen. The main results retrain those frozen
+configurations on the deterministic corpus generated above, using seeds 1, 2,
+and 3. No method is retuned on the released corpus. The standard WMDP
+multiple-choice benchmark and utility evaluations remain unchanged.
+
+The frozen parameters are committed in the WMDP branch's
+[`results/wmdp.json`](https://github.com/tml-epfl/ATWU/blob/wmdp/results/wmdp.json).
+Run their three-seed evaluation with:
+
+```bash
+export WMDP_STATE=saves/wmdp-final
+python scripts/wmdp/evaluate.py --gpus 0
+```
+
+Per-seed metrics are written to `$WMDP_STATE/final/results.json`.
+
+Pass `--no-paraphrase` to run only WMDP and MMLU. The complete main-table run
+also evaluates repetitiveness and win rate.
+
+#### Rerun the pipeline
+
+The released code can rerun the pipeline on a supplied corpus, but not
+reproduce the original tuning outcomes because the preliminary corpus is
+unavailable. Each search is initialized with parameters obtained from
+preliminary sweeps; those values, the search spaces, and the frozen selected
+configurations are all included in this branch.
+
+```bash
+export WMDP_STATE=saves/wmdp-retune
+
+python scripts/wmdp/tune_atwu.py --gpus 0 --n-trials 20
+for method in graddiff jensun wga satimp npo simnpo rmu; do
+    python scripts/wmdp/tune_baselines.py \
+        --method "$method" --gpus 0 --n-trials 20
+done
+
+python scripts/wmdp/evaluate.py \
+    --params "$WMDP_STATE/selected.json" --state "$WMDP_STATE" --gpus 0
+```
+
+The search scripts use separate resumable SQLite studies. When a search
+completes its 20 trials, it writes the top trial to
+`$WMDP_STATE/selected.json`, which `evaluate.py` then retrains on
+seeds 1, 2, and 3.
+
+WMDP and MMLU evaluation use `lm-eval` and require no judge API. The
+repetitiveness and win-rate stage uses the same judge credentials as the TOFU
+evaluation.
+
+For the complete protocol and branch results, see:
+
+- [`WMDP_REPRODUCE.md`](https://github.com/tml-epfl/ATWU/blob/wmdp/WMDP_REPRODUCE.md)
+- [`results/wmdp.json`](https://github.com/tml-epfl/ATWU/blob/wmdp/results/wmdp.json)
+
+## Citation
 
 ```bibtex
-@article{openunlearning2025,
-  title={{OpenUnlearning}: Accelerating {LLM} Unlearning via Unified Benchmarking of Methods and Metrics},
-  author={Dorna, Vineeth and Mekala, Anmol and Zhao, Wenlong and McCallum, Andrew and Lipton, Zachary C and Kolter, J Zico and Maini, Pratyush},
-  journal={arXiv preprint arXiv:2506.12618},
-  year={2025},
-  url={https://arxiv.org/abs/2506.12618}
-}
-@inproceedings{maini2024tofu,
-  title={{TOFU}: A Task of Fictitious Unlearning for {LLMs}},
-  author={Maini, Pratyush and Feng, Zhili and Schwarzschild, Avi and Lipton, Zachary Chase and Kolter, J Zico},
-  booktitle={First Conference on Language Modeling},
-  year={2024}
-}
-@article{shi2024muse,
-  title={{MUSE}: Machine Unlearning Six-Way Evaluation for Language Models},
-  author={Weijia Shi and Jaechan Lee and Yangsibo Huang and Sadhika Malladi and Jieyu Zhao and Ari Holtzman and Daogao Liu and Luke Zettlemoyer and Noah A. Smith and Chiyuan Zhang},
-  year={2024},
-  eprint={2407.06460},
-  archivePrefix={arXiv},
-  primaryClass={cs.CL},
-  url={https://arxiv.org/abs/2407.06460}
+@article{yuce2026learning,
+  title={Learning What to Forget: Improving LLM Unlearning via Learned Token-Level Importance},
+  author={Y{\"u}ce, Gizem and Nikolaou, Giorgos and Flammarion, Nicolas},
+  journal={arXiv preprint arXiv:2606.06320},
+  year={2026}
 }
 ```
-</details>
-
----
-
-### 🤝 Acknowledgements
-
-- This repo is inspired from [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory). 
-- The [TOFU](https://github.com/locuslab/tofu) and [MUSE](https://github.com/swj0419/muse_bench) benchmarks served as the foundation for our re-implementation. 
-
----
-
-### 📄 License
-This project is licensed under the MIT License. See the [`LICENSE`](LICENSE) file for details.
-
----
-
-[![Star History Chart](https://api.star-history.com/svg?repos=locuslab/open-unlearning&type=Date)](https://www.star-history.com/#locuslab/open-unlearning&Date)

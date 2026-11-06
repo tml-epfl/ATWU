@@ -1,0 +1,812 @@
+{
+  "schema_version": 1,
+  "benchmark": "WMDP",
+  "model": "HuggingFaceH4/zephyr-7b-beta",
+  "description": "Frozen selected hyperparameters with seed 0 results from the preliminary unreleased corpus and seeds 1-3 results from the released reproducible corpus.",
+  "metric_units": {
+    "mmlu": "proportion",
+    "wmdp_bio": "proportion",
+    "wmdp_cyber": "proportion",
+    "wmdp_mean": "proportion; arithmetic mean of WMDP-Bio and WMDP-Cyber",
+    "repetitiveness": "n-gram-entropy scale",
+    "winrate": "proportion"
+  },
+  "aggregation": {
+    "standard_deviation": "sample standard deviation",
+    "corpora_aggregated_separately": true,
+    "cross_corpus_aggregate": false
+  },
+  "corpora": {
+    "old_unreleased": {
+      "description": "Preliminary unreleased corpus used for hyperparameter selection and the original robustness runs.",
+      "included_seeds": [
+        0
+      ]
+    },
+    "new_reproducible": {
+      "description": "Released deterministic generated corpus used for the final evaluation without retuning.",
+      "path": "data/wmdp/generated-repro",
+      "included_seeds": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "methods": {
+    "graddiff": {
+      "display_name": "GradDiff",
+      "selected_trial": 1,
+      "selected_params": {
+        "lr": 4.42033073263385e-06,
+        "alpha": 1.138731709216906,
+        "gamma": 1.057004644615827
+      },
+      "old_unreleased_corpus": {
+        "seed_results": {
+          "0": {
+            "mmlu": 0.5531263352798746,
+            "wmdp_bio": 0.2749410840534171,
+            "wmdp_cyber": 0.2536487166582788,
+            "wmdp_mean": 0.26429490035584796,
+            "repetitiveness": 553.3592353101601,
+            "winrate": 0.51
+          }
+        },
+        "aggregate": {
+          "num_seeds": 1,
+          "seeds": [
+            0
+          ],
+          "mean": {
+            "mmlu": 0.5531263352798746,
+            "wmdp_bio": 0.2749410840534171,
+            "wmdp_cyber": 0.2536487166582788,
+            "wmdp_mean": 0.26429490035584796,
+            "repetitiveness": 553.3592353101601,
+            "winrate": 0.51
+          },
+          "sample_std": {
+            "mmlu": null,
+            "wmdp_bio": null,
+            "wmdp_cyber": null,
+            "wmdp_mean": null,
+            "repetitiveness": null,
+            "winrate": null
+          }
+        }
+      },
+      "new_reproducible_corpus": {
+        "seed_results": {
+          "1": {
+            "mmlu": 0.5511323173337132,
+            "wmdp_bio": 0.2906520031421838,
+            "wmdp_cyber": 0.24760946149974836,
+            "wmdp_mean": 0.26913073232096607,
+            "repetitiveness": 563.250941605333,
+            "winrate": 0.505
+          },
+          "2": {
+            "mmlu": 0.5634524996439254,
+            "wmdp_bio": 0.3315003927729772,
+            "wmdp_cyber": 0.27176648213387017,
+            "wmdp_mean": 0.3016334374534237,
+            "repetitiveness": 265.32418226015926,
+            "winrate": 0.08
+          },
+          "3": {
+            "mmlu": 0.5422304515026349,
+            "wmdp_bio": 0.2615868028279654,
+            "wmdp_cyber": 0.25314544539506795,
+            "wmdp_mean": 0.2573661241115167,
+            "repetitiveness": 543.2383756625502,
+            "winrate": 0.44
+          }
+        },
+        "aggregate": {
+          "num_seeds": 3,
+          "seeds": [
+            1,
+            2,
+            3
+          ],
+          "mean": {
+            "mmlu": 0.5522717561600912,
+            "wmdp_bio": 0.2945797329143755,
+            "wmdp_cyber": 0.2575071296762288,
+            "wmdp_mean": 0.2760434312953022,
+            "repetitiveness": 457.2711665093475,
+            "winrate": 0.3416666666666667
+          },
+          "sample_std": {
+            "mmlu": 0.01065680873700499,
+            "wmdp_bio": 0.03512189930260512,
+            "wmdp_cyber": 0.012655379441397288,
+            "wmdp_mean": 0.02292897322079609,
+            "repetitiveness": 166.53185662410704,
+            "winrate": 0.2289286642894099
+          }
+        }
+      }
+    },
+    "npo": {
+      "display_name": "NPO",
+      "selected_trial": 12,
+      "selected_params": {
+        "lr": 1.3271939366990564e-05,
+        "alpha": 0.19821813670773736,
+        "gamma": 0.40690424420303084,
+        "beta": 0.13649427801421185
+      },
+      "old_unreleased_corpus": {
+        "seed_results": {
+          "0": {
+            "mmlu": 0.5701467027488961,
+            "wmdp_bio": 0.5954438334642577,
+            "wmdp_cyber": 0.3910417715148465,
+            "wmdp_mean": 0.4932428024895521,
+            "repetitiveness": 635.4210074580448,
+            "winrate": 0.535
+          }
+        },
+        "aggregate": {
+          "num_seeds": 1,
+          "seeds": [
+            0
+          ],
+          "mean": {
+            "mmlu": 0.5701467027488961,
+            "wmdp_bio": 0.5954438334642577,
+            "wmdp_cyber": 0.3910417715148465,
+            "wmdp_mean": 0.4932428024895521,
+            "repetitiveness": 635.4210074580448,
+            "winrate": 0.535
+          },
+          "sample_std": {
+            "mmlu": null,
+            "wmdp_bio": null,
+            "wmdp_cyber": null,
+            "wmdp_mean": null,
+            "repetitiveness": null,
+            "winrate": null
+          }
+        }
+      },
+      "new_reproducible_corpus": {
+        "seed_results": {
+          "1": {
+            "mmlu": 0.570004272895599,
+            "wmdp_bio": 0.6111547525530243,
+            "wmdp_cyber": 0.3844992450931052,
+            "wmdp_mean": 0.49782699882306475,
+            "repetitiveness": 636.3747682414474,
+            "winrate": 0.575
+          },
+          "2": {
+            "mmlu": 0.5695769833357072,
+            "wmdp_bio": 0.6142969363707776,
+            "wmdp_cyber": 0.38500251635631605,
+            "wmdp_mean": 0.4996497263635469,
+            "repetitiveness": 636.2601075276042,
+            "winrate": 0.605
+          },
+          "3": {
+            "mmlu": 0.5663010967098704,
+            "wmdp_bio": 0.6197957580518461,
+            "wmdp_cyber": 0.4031202818319074,
+            "wmdp_mean": 0.5114580199418768,
+            "repetitiveness": 634.7160977316045,
+            "winrate": 0.55
+          }
+        },
+        "aggregate": {
+          "num_seeds": 3,
+          "seeds": [
+            1,
+            2,
+            3
+          ],
+          "mean": {
+            "mmlu": 0.5686274509803921,
+            "wmdp_bio": 0.615082482325216,
+            "wmdp_cyber": 0.39087401442710956,
+            "wmdp_mean": 0.5029782483761628,
+            "repetitiveness": 635.7836578335521,
+            "winrate": 0.5766666666666667
+          },
+          "sample_std": {
+            "mmlu": 0.002025978093657317,
+            "wmdp_bio": 0.004373734770487089,
+            "wmdp_cyber": 0.010608563498582375,
+            "wmdp_mean": 0.007400032315924473,
+            "repetitiveness": 0.9263099903798337,
+            "winrate": 0.02753785273643048
+          }
+        }
+      }
+    },
+    "simnpo": {
+      "display_name": "SimNPO",
+      "selected_trial": 10,
+      "selected_params": {
+        "lr": 1.6928125401436717e-05,
+        "alpha": 0.27091639687519836,
+        "gamma": 0.4393452512236958,
+        "beta": 2.2815008686795832,
+        "delta": 1.997636044211322
+      },
+      "old_unreleased_corpus": {
+        "seed_results": {
+          "0": {
+            "mmlu": 0.5442956843754451,
+            "wmdp_bio": 0.3582089552238806,
+            "wmdp_cyber": 0.2903875188726724,
+            "wmdp_mean": 0.3242982370482765,
+            "repetitiveness": 646.4170376138402,
+            "winrate": 0.395
+          }
+        },
+        "aggregate": {
+          "num_seeds": 1,
+          "seeds": [
+            0
+          ],
+          "mean": {
+            "mmlu": 0.5442956843754451,
+            "wmdp_bio": 0.3582089552238806,
+            "wmdp_cyber": 0.2903875188726724,
+            "wmdp_mean": 0.3242982370482765,
+            "repetitiveness": 646.4170376138402,
+            "winrate": 0.395
+          },
+          "sample_std": {
+            "mmlu": null,
+            "wmdp_bio": null,
+            "wmdp_cyber": null,
+            "wmdp_mean": null,
+            "repetitiveness": null,
+            "winrate": null
+          }
+        }
+      },
+      "new_reproducible_corpus": {
+        "seed_results": {
+          "1": {
+            "mmlu": 0.555333998005982,
+            "wmdp_bio": 0.40377062058130403,
+            "wmdp_cyber": 0.3069954705586311,
+            "wmdp_mean": 0.3553830455699676,
+            "repetitiveness": 640.2309386809574,
+            "winrate": 0.345
+          },
+          "2": {
+            "mmlu": 0.5556188577125766,
+            "wmdp_bio": 0.49803613511390415,
+            "wmdp_cyber": 0.3311524911927529,
+            "wmdp_mean": 0.4145943131533285,
+            "repetitiveness": 633.5528643886244,
+            "winrate": 0.415
+          },
+          "3": {
+            "mmlu": 0.5608887622845748,
+            "wmdp_bio": 0.44854673998428907,
+            "wmdp_cyber": 0.33417211877201813,
+            "wmdp_mean": 0.3913594293781536,
+            "repetitiveness": 623.9133715706652,
+            "winrate": 0.465
+          }
+        },
+        "aggregate": {
+          "num_seeds": 3,
+          "seeds": [
+            1,
+            2,
+            3
+          ],
+          "mean": {
+            "mmlu": 0.5572805393343778,
+            "wmdp_bio": 0.45011783189316573,
+            "wmdp_cyber": 0.3241066935078007,
+            "wmdp_mean": 0.3871122627004832,
+            "repetitiveness": 632.5657248800823,
+            "winrate": 0.4083333333333333
+          },
+          "sample_std": {
+            "mmlu": 0.0031280570498085037,
+            "wmdp_bio": 0.0471523918254797,
+            "wmdp_cyber": 0.014895469136334945,
+            "wmdp_mean": 0.029833242713423348,
+            "repetitiveness": 8.203449421232262,
+            "winrate": 0.060277137733417106
+          }
+        }
+      }
+    },
+    "jensun": {
+      "display_name": "Jensen-Shannon",
+      "selected_trial": 0,
+      "selected_params": {
+        "lr": 9.011e-06,
+        "alpha": 0.6745,
+        "gamma": 2.498
+      },
+      "old_unreleased_corpus": {
+        "seed_results": {
+          "0": {
+            "mmlu": 0.5493519441674976,
+            "wmdp_bio": 0.31814611154752553,
+            "wmdp_cyber": 0.3256165072974333,
+            "wmdp_mean": 0.3218813094224794,
+            "repetitiveness": 557.6558723467073,
+            "winrate": 0.515
+          }
+        },
+        "aggregate": {
+          "num_seeds": 1,
+          "seeds": [
+            0
+          ],
+          "mean": {
+            "mmlu": 0.5493519441674976,
+            "wmdp_bio": 0.31814611154752553,
+            "wmdp_cyber": 0.3256165072974333,
+            "wmdp_mean": 0.3218813094224794,
+            "repetitiveness": 557.6558723467073,
+            "winrate": 0.515
+          },
+          "sample_std": {
+            "mmlu": null,
+            "wmdp_bio": null,
+            "wmdp_cyber": null,
+            "wmdp_mean": null,
+            "repetitiveness": null,
+            "winrate": null
+          }
+        }
+      },
+      "new_reproducible_corpus": {
+        "seed_results": {
+          "1": {
+            "mmlu": 0.5801880074063523,
+            "wmdp_bio": 0.47682639434406915,
+            "wmdp_cyber": 0.3316557624559638,
+            "wmdp_mean": 0.40424107840001644,
+            "repetitiveness": 458.65103368594015,
+            "winrate": 0.355
+          },
+          "2": {
+            "mmlu": 0.5823956701324597,
+            "wmdp_bio": 0.4603299293008641,
+            "wmdp_cyber": 0.4011071967790639,
+            "wmdp_mean": 0.43071856303996403,
+            "repetitiveness": 596.9564498145301,
+            "winrate": 0.625
+          },
+          "3": {
+            "mmlu": 0.5786924939467313,
+            "wmdp_bio": 0.32521602513747055,
+            "wmdp_cyber": 0.3537996980372421,
+            "wmdp_mean": 0.33950786158735635,
+            "repetitiveness": 369.47477934218733,
+            "winrate": 0.31
+          }
+        },
+        "aggregate": {
+          "num_seeds": 3,
+          "seeds": [
+            1,
+            2,
+            3
+          ],
+          "mean": {
+            "mmlu": 0.5804253904951812,
+            "wmdp_bio": 0.4207907829274679,
+            "wmdp_cyber": 0.36218755242408995,
+            "wmdp_mean": 0.39148916767577896,
+            "repetitiveness": 475.0274209475525,
+            "winrate": 0.43
+          },
+          "sample_std": {
+            "mmlu": 0.0018629657843833363,
+            "wmdp_bio": 0.0831801303478957,
+            "wmdp_cyber": 0.03547735204740053,
+            "wmdp_mean": 0.046923410310935144,
+            "repetitiveness": 114.62162599190698,
+            "winrate": 0.1703672503740082
+          }
+        }
+      }
+    },
+    "rmu": {
+      "display_name": "RMU",
+      "selected_trial": 12,
+      "selected_params": {
+        "lr": 3.447070007944503e-05,
+        "alpha": 0.3873648483448878,
+        "gamma": 0.5107763806602886,
+        "steering_coeff": 1.3619508396456985,
+        "layer": 8
+      },
+      "old_unreleased_corpus": {
+        "seed_results": {
+          "0": {
+            "mmlu": 0.560461472724683,
+            "wmdp_bio": 0.30950510604870385,
+            "wmdp_cyber": 0.25968797181680925,
+            "wmdp_mean": 0.28459653893275655,
+            "repetitiveness": 629.9398196450018,
+            "winrate": 0.58
+          }
+        },
+        "aggregate": {
+          "num_seeds": 1,
+          "seeds": [
+            0
+          ],
+          "mean": {
+            "mmlu": 0.560461472724683,
+            "wmdp_bio": 0.30950510604870385,
+            "wmdp_cyber": 0.25968797181680925,
+            "wmdp_mean": 0.28459653893275655,
+            "repetitiveness": 629.9398196450018,
+            "winrate": 0.58
+          },
+          "sample_std": {
+            "mmlu": null,
+            "wmdp_bio": null,
+            "wmdp_cyber": null,
+            "wmdp_mean": null,
+            "repetitiveness": null,
+            "winrate": null
+          }
+        }
+      },
+      "new_reproducible_corpus": {
+        "seed_results": {
+          "1": {
+            "mmlu": 0.5615296966244124,
+            "wmdp_bio": 0.27965435978004716,
+            "wmdp_cyber": 0.25314544539506795,
+            "wmdp_mean": 0.2663999025875575,
+            "repetitiveness": 629.0813702801659,
+            "winrate": 0.525
+          },
+          "2": {
+            "mmlu": 0.5613160518444666,
+            "wmdp_bio": 0.3032207384131972,
+            "wmdp_cyber": 0.25163563160543534,
+            "wmdp_mean": 0.27742818500931626,
+            "repetitiveness": 630.8099885638647,
+            "winrate": 0.53
+          },
+          "3": {
+            "mmlu": 0.5623130608175474,
+            "wmdp_bio": 0.3267871170463472,
+            "wmdp_cyber": 0.2617010568696527,
+            "wmdp_mean": 0.294244086958,
+            "repetitiveness": 629.7525482105601,
+            "winrate": 0.575
+          }
+        },
+        "aggregate": {
+          "num_seeds": 3,
+          "seeds": [
+            1,
+            2,
+            3
+          ],
+          "mean": {
+            "mmlu": 0.5617196030954755,
+            "wmdp_bio": 0.3032207384131972,
+            "wmdp_cyber": 0.2554940446233853,
+            "wmdp_mean": 0.27935739151829125,
+            "repetitiveness": 629.8813023515303,
+            "winrate": 0.5433333333333333
+          },
+          "sample_std": {
+            "mmlu": 0.0005249333995037849,
+            "wmdp_bio": 0.02356637863315003,
+            "wmdp_cyber": 0.005428179730704041,
+            "wmdp_mean": 0.014021983780104065,
+            "repetitiveness": 0.8714720387351746,
+            "winrate": 0.02753785273643047
+          }
+        }
+      }
+    },
+    "wga": {
+      "display_name": "WGA",
+      "selected_trial": 15,
+      "selected_params": {
+        "lr": 6.994326653756322e-06,
+        "alpha": 0.186449485985549,
+        "gamma": 0.7984095975089673,
+        "beta": 0.18935966712866917
+      },
+      "old_unreleased_corpus": {
+        "seed_results": {
+          "0": {
+            "mmlu": 0.5723543654750035,
+            "wmdp_bio": 0.2498036135113904,
+            "wmdp_cyber": 0.25465525918470056,
+            "wmdp_mean": 0.2522294363480455,
+            "repetitiveness": 571.7144182758168,
+            "winrate": 0.5
+          }
+        },
+        "aggregate": {
+          "num_seeds": 1,
+          "seeds": [
+            0
+          ],
+          "mean": {
+            "mmlu": 0.5723543654750035,
+            "wmdp_bio": 0.2498036135113904,
+            "wmdp_cyber": 0.25465525918470056,
+            "wmdp_mean": 0.2522294363480455,
+            "repetitiveness": 571.7144182758168,
+            "winrate": 0.5
+          },
+          "sample_std": {
+            "mmlu": null,
+            "wmdp_bio": null,
+            "wmdp_cyber": null,
+            "wmdp_mean": null,
+            "repetitiveness": null,
+            "winrate": null
+          }
+        }
+      },
+      "new_reproducible_corpus": {
+        "seed_results": {
+          "1": {
+            "mmlu": 0.5628115653040877,
+            "wmdp_bio": 0.25216025137470544,
+            "wmdp_cyber": 0.2506290890790136,
+            "wmdp_mean": 0.2513946702268595,
+            "repetitiveness": 573.6674436886633,
+            "winrate": 0.51
+          },
+          "2": {
+            "mmlu": 0.5667996011964108,
+            "wmdp_bio": 0.26001571091908876,
+            "wmdp_cyber": 0.2747861097131354,
+            "wmdp_mean": 0.2674009103161121,
+            "repetitiveness": 570.695760018008,
+            "winrate": 0.585
+          },
+          "3": {
+            "mmlu": 0.5721407206950577,
+            "wmdp_bio": 0.2835820895522388,
+            "wmdp_cyber": 0.25465525918470056,
+            "wmdp_mean": 0.2691186743684697,
+            "repetitiveness": 579.4659220080924,
+            "winrate": 0.55
+          }
+        },
+        "aggregate": {
+          "num_seeds": 3,
+          "seeds": [
+            1,
+            2,
+            3
+          ],
+          "mean": {
+            "mmlu": 0.5672506290651854,
+            "wmdp_bio": 0.2652526839486777,
+            "wmdp_cyber": 0.2600234859922832,
+            "wmdp_mean": 0.2626380849704804,
+            "repetitiveness": 574.6097085715879,
+            "winrate": 0.5483333333333333
+          },
+          "sample_std": {
+            "mmlu": 0.004680903190734106,
+            "wmdp_bio": 0.01635244304372452,
+            "wmdp_cyber": 0.012942326134531728,
+            "wmdp_mean": 0.009774889240175416,
+            "repetitiveness": 4.460362391698163,
+            "winrate": 0.037527767497325656
+          }
+        }
+      }
+    },
+    "satimp": {
+      "display_name": "SatImp",
+      "selected_trial": 19,
+      "selected_params": {
+        "lr": 4.976946899049022e-06,
+        "alpha": 0.34148383514787634,
+        "gamma": 4.676699042962518,
+        "beta1": 1.0629159878533894,
+        "beta2": 0.10218465791469941
+      },
+      "old_unreleased_corpus": {
+        "seed_results": {
+          "0": {
+            "mmlu": 0.5793334282865689,
+            "wmdp_bio": 0.3739198743126473,
+            "wmdp_cyber": 0.35430296930045296,
+            "wmdp_mean": 0.3641114218065501,
+            "repetitiveness": 626.5349383281224,
+            "winrate": 0.585
+          }
+        },
+        "aggregate": {
+          "num_seeds": 1,
+          "seeds": [
+            0
+          ],
+          "mean": {
+            "mmlu": 0.5793334282865689,
+            "wmdp_bio": 0.3739198743126473,
+            "wmdp_cyber": 0.35430296930045296,
+            "wmdp_mean": 0.3641114218065501,
+            "repetitiveness": 626.5349383281224,
+            "winrate": 0.585
+          },
+          "sample_std": {
+            "mmlu": null,
+            "wmdp_bio": null,
+            "wmdp_cyber": null,
+            "wmdp_mean": null,
+            "repetitiveness": null,
+            "winrate": null
+          }
+        }
+      },
+      "new_reproducible_corpus": {
+        "seed_results": {
+          "1": {
+            "mmlu": 0.5821108104258652,
+            "wmdp_bio": 0.3904163393558523,
+            "wmdp_cyber": 0.3583291394061399,
+            "wmdp_mean": 0.37437273938099613,
+            "repetitiveness": 628.4711580444681,
+            "winrate": 0.64
+          },
+          "2": {
+            "mmlu": 0.5822532402791625,
+            "wmdp_bio": 0.37549096622152395,
+            "wmdp_cyber": 0.3663814796175138,
+            "wmdp_mean": 0.3709362229195189,
+            "repetitiveness": 622.9058031268505,
+            "winrate": 0.58
+          },
+          "3": {
+            "mmlu": 0.584816977638513,
+            "wmdp_bio": 0.42812254516889237,
+            "wmdp_cyber": 0.3638651233014595,
+            "wmdp_mean": 0.3959938342351759,
+            "repetitiveness": 623.4137517466042,
+            "winrate": 0.585
+          }
+        },
+        "aggregate": {
+          "num_seeds": 3,
+          "seeds": [
+            1,
+            2,
+            3
+          ],
+          "mean": {
+            "mmlu": 0.5830603427811802,
+            "wmdp_bio": 0.3980099502487562,
+            "wmdp_cyber": 0.36285858077503774,
+            "wmdp_mean": 0.38043426551189696,
+            "repetitiveness": 624.9302376393076,
+            "winrate": 0.6016666666666667
+          },
+          "sample_std": {
+            "mmlu": 0.0015229563625642813,
+            "wmdp_bio": 0.027125043233475043,
+            "wmdp_cyber": 0.004119452829326839,
+            "wmdp_mean": 0.013584091632800893,
+            "repetitiveness": 3.0770263139659386,
+            "winrate": 0.033291640592397
+          }
+        }
+      }
+    },
+    "atwu": {
+      "display_name": "ATWU",
+      "selected_trial": 0,
+      "selected_params": {
+        "alpha": 0.1,
+        "gamma": 10.0,
+        "budget": 0.4,
+        "lambda_population": 10.0,
+        "lr": 4.7619925960174024e-06,
+        "beta": 2.386643331698242,
+        "scorer_lr": 0.008162511373314002,
+        "lambda_entropy": 1.0,
+        "lambda_l2": 1.0
+      },
+      "old_unreleased_corpus": {
+        "seed_results": {
+          "0": {
+            "mmlu": 0.5788349238000284,
+            "wmdp_bio": 0.2655145326001571,
+            "wmdp_cyber": 0.2677403120281832,
+            "wmdp_mean": 0.26662742231417014,
+            "repetitiveness": 607.76885366793,
+            "winrate": 0.555
+          }
+        },
+        "aggregate": {
+          "num_seeds": 1,
+          "seeds": [
+            0
+          ],
+          "mean": {
+            "mmlu": 0.5788349238000284,
+            "wmdp_bio": 0.2655145326001571,
+            "wmdp_cyber": 0.2677403120281832,
+            "wmdp_mean": 0.26662742231417014,
+            "repetitiveness": 607.76885366793,
+            "winrate": 0.555
+          },
+          "sample_std": {
+            "mmlu": null,
+            "wmdp_bio": null,
+            "wmdp_cyber": null,
+            "wmdp_mean": null,
+            "repetitiveness": null,
+            "winrate": null
+          }
+        }
+      },
+      "new_reproducible_corpus": {
+        "seed_results": {
+          "1": {
+            "mmlu": 0.5725680102549494,
+            "wmdp_bio": 0.2812254516889238,
+            "wmdp_cyber": 0.2637141419224962,
+            "wmdp_mean": 0.27246979680571004,
+            "repetitiveness": 582.4251761663213,
+            "winrate": 0.5
+          },
+          "2": {
+            "mmlu": 0.5761287565873807,
+            "wmdp_bio": 0.2694422623723488,
+            "wmdp_cyber": 0.2964267740312028,
+            "wmdp_mean": 0.28293451820177584,
+            "repetitiveness": 609.8236104947966,
+            "winrate": 0.5
+          },
+          "3": {
+            "mmlu": 0.5800455775530551,
+            "wmdp_bio": 0.2875098193244305,
+            "wmdp_cyber": 0.2682435832913941,
+            "wmdp_mean": 0.2778767013079123,
+            "repetitiveness": 577.6077443732905,
+            "winrate": 0.47
+          }
+        },
+        "aggregate": {
+          "num_seeds": 3,
+          "seeds": [
+            1,
+            2,
+            3
+          ],
+          "mean": {
+            "mmlu": 0.5762474481317951,
+            "wmdp_bio": 0.2793925111285677,
+            "wmdp_cyber": 0.276128166415031,
+            "wmdp_mean": 0.2777603387717994,
+            "repetitiveness": 589.9521770114695,
+            "winrate": 0.49
+          },
+          "sample_std": {
+            "mmlu": 0.0037401963767242797,
+            "wmdp_bio": 0.00917218114068446,
+            "wmdp_cyber": 0.017724391756702155,
+            "wmdp_mean": 0.005233331028530234,
+            "repetitiveness": 17.3769189956634,
+            "winrate": 0.017320508075688787
+          }
+        }
+      }
+    }
+  }
+}

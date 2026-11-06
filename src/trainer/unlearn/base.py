@@ -36,6 +36,16 @@ if is_deepspeed_available():
 
 
 class UnlearnTrainer(FinetuneTrainer):
+    def _get_train_sampler(self, *args, **kwargs):
+        # CAIS-style per-topic alternation requires the dataloader to traverse the
+        # dataset in index order — __getitem__ already routes global idx →
+        # (topic, shuffled_local), so any HF-side shuffle would break the K-block
+        # alternation. Keyed off a dataset flag rather than a concrete class so
+        # every alternating variant (incl. AlternatingReplayDataset) is covered.
+        if getattr(self.train_dataset, "requires_sequential_sampler", False):
+            return torch.utils.data.SequentialSampler(self.train_dataset)
+        return super()._get_train_sampler(*args, **kwargs)
+
     # Adapted from Huggingface DPO Trainer: https://github.com/huggingface/accelerate/blob/739b135f8367becb67ffaada12fe76e3aa60fefd/src/accelerate/accelerator.py#L1473
     def _prepare_deepspeed(self, model):
         # Adapted from accelerate: https://github.com/huggingface/accelerate/blob/739b135f8367becb67ffaada12fe76e3aa60fefd/src/accelerate/accelerator.py#L1473

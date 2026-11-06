@@ -17,6 +17,7 @@ ms_cache/
 logs/
 hf_cache/
 cache*/
+# Generated experiment artifacts; commit only compact summaries under results/.
 saves*/
 notebooks/
 output*/

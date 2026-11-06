@@ -1,0 +1,8 @@
+# Empty preset for CAIS-style multi-topic alternating unlearning.
+# Experiment YAMLs define data.forget.<topic> and data.retain.<topic> inline.
+# No default dataset groups are pulled in so there are no leftover TOFU_QA entries
+# that get_data() would try to build.
+defaults:
+  - datasets@eval: null
+
+anchor: forget

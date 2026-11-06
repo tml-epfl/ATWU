@@ -1,0 +1,108 @@
+# @package _global_
+
+# Per-topic WMDP unlearning using the generated Bio, Cyber, and retain corpora.
+# The retain corpus spans 57 MMLU subject areas and is shared by both topics.
+#
+# Overridable from the CLI:
+#   gen_bio_file / gen_cyber_file / gen_retain_file
+
+defaults:
+  - override /model: zephyr-7b-beta
+  - override /trainer: RMU
+  - override /data: multitopic_unlearn
+  - override /eval: lm_eval
+
+data_split: cyber  # placeholder for leftover ${data_split} interpolations
+
+gen_bio_file: data/wmdp/generated/bio-forget.text.jsonl
+gen_cyber_file: data/wmdp/generated/cyber-forget.text.jsonl
+gen_retain_file: data/wmdp/generated/general-retain.text.jsonl
+
+data:
+  anchor: forget
+  alternating_topics:
+    block_size: 32
+    seed: 0
+    first_topic: bio
+  forget:
+    bio:
+      access_key: bio
+      handler: PartitionedPretrainingDataset
+      args:
+        per_sample: true
+        max_length: 768
+        hf_args:
+          path: json
+          data_files: ${gen_bio_file}
+          split: train
+        text_key: text
+    cyber:
+      access_key: cyber
+      handler: PartitionedPretrainingDataset
+      args:
+        per_sample: true
+        max_length: 512
+        hf_args:
+          path: json
+          data_files: ${gen_cyber_file}
+          split: train
+        text_key: text
+  retain:
+    # One general retain corpus, used for both topics.
+    bio:
+      access_key: bio
+      handler: PartitionedPretrainingDataset
+      args:
+        per_sample: true
+        max_length: 512
+        text_key: text
+        hf_args:
+          path: json
+          data_files: ${gen_retain_file}
+          split: train
+    cyber:
+      access_key: cyber
+      handler: PartitionedPretrainingDataset
+      args:
+        per_sample: true
+        max_length: 512
+        text_key: text
+        hf_args:
+          path: json
+          data_files: ${gen_retain_file}
+          split: train
+
+eval:
+  lm_eval:
+    tasks:
+      - wmdp_cyber
+      - wmdp_bio
+      - mmlu
+
+collator:
+  DataCollatorForSupervisedDataset:
+    args:
+      padding_side: left
+
+trainer:
+  args:
+    per_device_train_batch_size: 4
+    gradient_accumulation_steps: 8
+    learning_rate: 5e-5
+    eval_strategy: no
+    do_eval: false
+    eval_on_start: false
+    max_steps: 125
+    lr_scheduler_type: linear
+
+  method_args:
+    # Inherited from /trainer: RMU; non-RMU trainers ~delete these on the CLI.
+    gamma: 1.0
+    steering_coeff: 2
+    retain_loss_type: EMBED_DIFF
+    alpha: 1
+    module_regex: model\.layers\.7
+    trainable_params_regex:
+      - model\.layers\.(5|6|7)\.mlp\.down_proj\.weight
+
+task_name: ???
