@@ -1,0 +1,1536 @@
+{
+  "schema_version": 1,
+  "benchmark": "TOFU",
+  "description": "Selected hyperparameters and archived final-run summaries for the TOFU experiments.",
+  "models": {
+    "1B": "meta-llama/Llama-3.2-1B-Instruct",
+    "8B": "meta-llama/Llama-3.1-8B-Instruct"
+  },
+  "splits": {
+    "forget01": {
+      "forget_fraction": 0.01,
+      "retain_split": "retain99",
+      "holdout_split": "holdout01"
+    },
+    "forget05": {
+      "forget_fraction": 0.05,
+      "retain_split": "retain95",
+      "holdout_split": "holdout05"
+    },
+    "forget10": {
+      "forget_fraction": 0.1,
+      "retain_split": "retain90",
+      "holdout_split": "holdout10"
+    }
+  },
+  "selection": {
+    "source_split": "forget10",
+    "parameters_shared_across_splits": true,
+    "model_specific_learning_rates": true
+  },
+  "evaluation": {
+    "result_type": "one archived final run per available method/model/split configuration",
+    "seed_aggregation": false,
+    "note": "The summary values aggregate benchmark examples, not repeated random seeds. The consolidated archive does not record a per-run seed, so no seed identifier or standard deviation is reported here."
+  },
+  "metric_units": {
+    "exact_memorization": "proportion",
+    "extraction_strength": "proportion",
+    "model_utility": "proportion",
+    "privleak": "TOFU evaluation scale",
+    "retain_extraction_strength": "proportion",
+    "forget_quality": "proportion",
+    "retain_quality": "proportion",
+    "mmlu": "proportion",
+    "repetitiveness": "n-gram entropy x100",
+    "winrate": "proportion"
+  },
+  "base_models": {
+    "Llama-3.2-1B-Instruct": {
+      "forget01": {
+        "original_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.9803751230239868,
+            "extraction_strength": 0.7431993188936197,
+            "model_utility": 0.5991534707368931,
+            "privleak": -99.4124999801175,
+            "retain_extraction_strength": 0.7366174969908765
+          },
+          "paraphrase_summary": {
+            "forget_quality": 0.9,
+            "mia_gradnorm": 0.999375,
+            "mia_loss": 1.0,
+            "mia_min_k": 1.0,
+            "mia_min_k_plus_plus": 0.999375,
+            "mia_zlib": 1.0,
+            "mmlu": 0.4513602050989887,
+            "repetitiveness": 559.0958062324138,
+            "retain_quality": 0.41542002301495967
+          }
+        },
+        "retain_only_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.6449794679880142,
+            "extraction_strength": 0.06928205675330254,
+            "model_utility": 0.5986022374345417,
+            "privleak": -3.4124999993174963,
+            "retain_extraction_strength": 0.7513667258799966
+          },
+          "paraphrase_summary": {
+            "forget_quality": 0.3,
+            "mia_gradnorm": 0.5490625,
+            "mia_loss": 0.48562500000000003,
+            "mia_min_k": 0.475,
+            "mia_min_k_plus_plus": 0.5175,
+            "mia_zlib": 0.53125,
+            "mmlu": 0.45271328870531263,
+            "repetitiveness": 564.1798062556999,
+            "retain_quality": 0.4211363636363636
+          }
+        }
+      },
+      "forget05": {
+        "original_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.9744433870911599,
+            "extraction_strength": 0.7271725475337903,
+            "model_utility": 0.5991534707368931,
+            "privleak": -99.37249998012551,
+            "retain_extraction_strength": 0.7366174969908765
+          },
+          "paraphrase_summary": {
+            "forget_quality": 0.905,
+            "mia_gradnorm": 0.998925,
+            "mia_loss": 0.999875,
+            "mia_min_k": 0.99995,
+            "mia_min_k_plus_plus": 0.9994999999999999,
+            "mia_zlib": 0.99995,
+            "mmlu": 0.4513602050989887,
+            "repetitiveness": 559.0958062324138,
+            "retain_quality": 0.4290909090909091
+          }
+        },
+        "retain_only_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.5935281582176686,
+            "extraction_strength": 0.06343683526973448,
+            "model_utility": 0.599101209301938,
+            "privleak": 18.347499996330505,
+            "retain_extraction_strength": 0.7456001120986429
+          },
+          "paraphrase_summary": {
+            "forget_quality": 0.385,
+            "mia_gradnorm": 0.31853750000000003,
+            "mia_loss": 0.36407500000000004,
+            "mia_min_k": 0.36262500000000003,
+            "mia_min_k_plus_plus": 0.471675,
+            "mia_zlib": 0.296,
+            "mmlu": 0.4513602050989887,
+            "repetitiveness": 563.4483043500917,
+            "retain_quality": 0.44628099173553715
+          }
+        }
+      },
+      "forget10": {
+        "original_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.9739357572793961,
+            "extraction_strength": 0.706268493976531,
+            "model_utility": 0.5991534707368931,
+            "privleak": -99.329999980134,
+            "retain_extraction_strength": 0.7366174969908765
+          },
+          "paraphrase_summary": {
+            "forget_quality": 0.9313984168865436,
+            "mia_gradnorm": 0.99848125,
+            "mia_loss": 0.996525,
+            "mia_min_k": 0.99666875,
+            "mia_min_k_plus_plus": 0.99798125,
+            "mia_zlib": 0.9979875,
+            "mmlu": 0.4513602050989887,
+            "repetitiveness": 559.0958062324138,
+            "retain_quality": 0.4298368298368298
+          }
+        },
+        "retain_only_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.5848885098844767,
+            "extraction_strength": 0.05895894128954535,
+            "model_utility": 0.5911246639353407,
+            "privleak": 23.477499995304495,
+            "retain_extraction_strength": 0.7456741173037983
+          },
+          "paraphrase_summary": {
+            "forget_quality": 0.36828644501278773,
+            "mia_gradnorm": 0.34164375,
+            "mia_loss": 0.38706874999999996,
+            "mia_min_k": 0.38198125000000005,
+            "mia_min_k_plus_plus": 0.47583125,
+            "mia_zlib": 0.3082875,
+            "mmlu": 0.4498646916393676,
+            "repetitiveness": 564.4866110618092,
+            "retain_quality": 0.42117376294591485
+          }
+        }
+      }
+    },
+    "Llama-3.1-8B-Instruct": {
+      "forget01": {
+        "original_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.9994047582149506,
+            "extraction_strength": 0.9767857142857143,
+            "model_utility": 0.6276202794485513,
+            "privleak": -99.97499998000498,
+            "retain_extraction_strength": 0.9920116744876151
+          },
+          "paraphrase_summary": {
+            "forget_quality": 1.0,
+            "mia_gradnorm": 0.9999374999999999,
+            "mia_loss": 0.999875,
+            "mia_min_k": 0.999875,
+            "mia_min_k_plus_plus": 0.998125,
+            "mia_zlib": 0.9999374999999999,
+            "mmlu": 0.6660019940179461,
+            "repetitiveness": 545.7003797650971,
+            "retain_quality": 0.6819332566168009
+          }
+        },
+        "retain_only_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.6641240671277047,
+            "extraction_strength": 0.06453452780525375,
+            "model_utility": 0.617687451559837,
+            "privleak": 3.049999999389997,
+            "retain_extraction_strength": 0.9919990774444278
+          },
+          "paraphrase_summary": {
+            "forget_quality": 0.35,
+            "mia_gradnorm": 0.5871875,
+            "mia_loss": 0.490625,
+            "mia_min_k": 0.5006250000000001,
+            "mia_min_k_plus_plus": 0.5012500000000001,
+            "mia_zlib": 0.528125,
+            "mmlu": 0.662797322318758,
+            "repetitiveness": 539.4218021062044,
+            "retain_quality": 0.6642266824085006
+          }
+        }
+      },
+      "forget05": {
+        "original_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.9977567398548126,
+            "extraction_strength": 0.9719876209316999,
+            "model_utility": 0.6276202794485513,
+            "privleak": -99.9224999800155,
+            "retain_extraction_strength": 0.9920116744876151
+          },
+          "paraphrase_summary": {
+            "forget_quality": 0.99,
+            "mia_gradnorm": 0.9998875,
+            "mia_loss": 1.0,
+            "mia_min_k": 1.0,
+            "mia_min_k_plus_plus": 0.999875,
+            "mia_zlib": 0.99995,
+            "mmlu": 0.6660019940179461,
+            "repetitiveness": 545.7003797650971,
+            "retain_quality": 0.6855477855477856
+          }
+        },
+        "retain_only_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.6166549460589885,
+            "extraction_strength": 0.07418035863756514,
+            "model_utility": 0.6322566730950868,
+            "privleak": 20.199999995959995,
+            "retain_extraction_strength": 0.9920213852757372
+          },
+          "paraphrase_summary": {
+            "forget_quality": 0.365,
+            "mia_gradnorm": 0.361425,
+            "mia_loss": 0.36155,
+            "mia_min_k": 0.355825,
+            "mia_min_k_plus_plus": 0.4884,
+            "mia_zlib": 0.29542499999999994,
+            "mmlu": 0.6678535821108105,
+            "repetitiveness": 552.0729472376602,
+            "retain_quality": 0.6486422668240851
+          }
+        }
+      },
+      "forget10": {
+        "original_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.9983392949402332,
+            "extraction_strength": 0.9789440160652491,
+            "model_utility": 0.6276202794485513,
+            "privleak": -99.92374998001526,
+            "retain_extraction_strength": 0.9920116744876151
+          },
+          "paraphrase_summary": {
+            "forget_quality": 0.995,
+            "mia_gradnorm": 0.999634375,
+            "mia_loss": 0.99956875,
+            "mia_min_k": 0.9995812500000001,
+            "mia_min_k_plus_plus": 0.99875,
+            "mia_zlib": 0.99979375,
+            "mmlu": 0.6660019940179461,
+            "repetitiveness": 545.7003797650971,
+            "retain_quality": 0.6780885780885781
+          }
+        },
+        "retain_only_model": {
+          "tofu_summary": {
+            "exact_memorization": 0.6134013728052378,
+            "extraction_strength": 0.06509003634390244,
+            "model_utility": 0.6461359563814568,
+            "privleak": 23.972499995205496,
+            "retain_extraction_strength": 0.9904661032249683
+          },
+          "paraphrase_summary": {
+            "forget_quality": 0.395,
+            "mia_gradnorm": 0.37645625,
+            "mia_loss": 0.38425000000000004,
+            "mia_min_k": 0.379375,
+            "mia_min_k_plus_plus": 0.47638125000000003,
+            "mia_zlib": 0.3123125,
+            "mmlu": 0.6678535821108105,
+            "repetitiveness": 546.9467947345704,
+            "retain_quality": 0.6566168009205984
+          }
+        }
+      }
+    }
+  },
+  "methods": {
+    "GradDiff": {
+      "selected_params": {
+        "alpha": 0.7972014659988814,
+        "gamma": 0.11636609561681736,
+        "retain_loss_type": "NLL"
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 1.900226110275561e-05,
+        "Llama-3.1-8B-Instruct": 1.900226110275561e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.8633110076189041,
+              "extraction_strength": 0.21966005686732118,
+              "model_utility": 0.5916206588692756,
+              "privleak": -92.474999981505,
+              "retain_extraction_strength": 0.6251402938988054
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.775,
+              "mmlu": 0.45014955134596213,
+              "repetitiveness": 563.0389656297106,
+              "retain_quality": 0.35880322209436133,
+              "winrate": 0.515
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.7929945330321789,
+              "extraction_strength": 0.17824752628026033,
+              "model_utility": 0.5805500461436032,
+              "privleak": -57.56999998848601,
+              "retain_extraction_strength": 0.6199002674960404
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.6858638743455497,
+              "mmlu": 0.447514599059963,
+              "repetitiveness": 563.149497925023,
+              "retain_quality": 0.36121212121212115,
+              "winrate": 0.505
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.6793667697953061,
+              "extraction_strength": 0.10721270779398981,
+              "model_utility": 0.584473665854568,
+              "privleak": -1.5774999996845094,
+              "retain_extraction_strength": 0.6575712407916545
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.5793450881612091,
+              "mmlu": 0.4517874946588805,
+              "repetitiveness": 562.5734296070062,
+              "retain_quality": 0.3739930955120828,
+              "winrate": 0.555
+            }
+          }
+        },
+        "Llama-3.1-8B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.8716368496417999,
+              "extraction_strength": 0.20284671457997164,
+              "model_utility": 0.6085488543035917,
+              "privleak": -49.849999990030014,
+              "retain_extraction_strength": 0.7239717676514484
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.725,
+              "mmlu": 0.6655747044580544,
+              "repetitiveness": 528.9700066303668,
+              "retain_quality": 0.509090909090909,
+              "winrate": 0.45
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.8622244293987751,
+              "extraction_strength": 0.25618268384416365,
+              "model_utility": 0.6222219103153092,
+              "privleak": -22.87999999542399,
+              "retain_extraction_strength": 0.7815713123295731
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.75,
+              "mmlu": 0.6665004985044866,
+              "repetitiveness": 544.0433670910853,
+              "retain_quality": 0.5158787878787878,
+              "winrate": 0.455
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.7195361538231373,
+              "extraction_strength": 0.09593049725193348,
+              "model_utility": 0.6771235159986431,
+              "privleak": 59.64874998807026,
+              "retain_extraction_strength": 0.8381718762275463
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.6,
+              "mmlu": 0.660518444666002,
+              "repetitiveness": 545.3587298208811,
+              "retain_quality": 0.561072261072261,
+              "winrate": 0.48
+            }
+          }
+        }
+      }
+    },
+    "DPO": {
+      "selected_params": {
+        "alpha": 0.15072794715140778,
+        "gamma": 3.802291708012508,
+        "beta": 0.20959534853013898,
+        "retain_loss_type": "NLL"
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 2.273879162545032e-05,
+        "Llama-3.1-8B-Instruct": 3.123820165607387e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.7738229602575302,
+              "extraction_strength": 0.1341153534417551,
+              "model_utility": 0.572069941070598,
+              "privleak": -83.82499998323499,
+              "retain_extraction_strength": 0.5662784450216687
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.175,
+              "mmlu": 0.4513602050989887,
+              "repetitiveness": 551.7686236382463,
+              "retain_quality": 0.38087367178276266,
+              "winrate": 0.565
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.8048902171850204,
+              "extraction_strength": 0.2049741594011281,
+              "model_utility": 0.5669890035889049,
+              "privleak": -87.52499998249499,
+              "retain_extraction_strength": 0.6240447375768815
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.5053191489361702,
+              "mmlu": 0.448084318473152,
+              "repetitiveness": 550.6033331837867,
+              "retain_quality": 0.3861818181818182,
+              "winrate": 0.45
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.8131713922321796,
+              "extraction_strength": 0.19352991450321005,
+              "model_utility": 0.5723120799484603,
+              "privleak": -88.63874998227226,
+              "retain_extraction_strength": 0.7160397595980195
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.5329815303430079,
+              "mmlu": 0.44851160803304374,
+              "repetitiveness": 559.5863408813516,
+              "retain_quality": 0.3815850815850816,
+              "winrate": 0.59
+            }
+          }
+        },
+        "Llama-3.1-8B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.8162391990423202,
+              "extraction_strength": 0.21938811713168457,
+              "model_utility": 0.6096033416275003,
+              "privleak": -76.39999998472003,
+              "retain_extraction_strength": 0.804534471988351
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.125,
+              "mmlu": 0.6625124626121635,
+              "repetitiveness": 481.6510092893999,
+              "retain_quality": 0.5663981588032222,
+              "winrate": 0.36
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.8162563946843148,
+              "extraction_strength": 0.26773928549027837,
+              "model_utility": 0.5731554799810946,
+              "privleak": -65.05499998698899,
+              "retain_extraction_strength": 0.8154437872142694
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.415,
+              "mmlu": 0.6510468594217348,
+              "repetitiveness": 529.8403252482478,
+              "retain_quality": 0.5843498273878021,
+              "winrate": 0.34
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.8548348173499107,
+              "extraction_strength": 0.31375837582922034,
+              "model_utility": 0.6127626978442593,
+              "privleak": -79.51999998409599,
+              "retain_extraction_strength": 0.8604677526111972
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.4025,
+              "mmlu": 0.642643498077197,
+              "repetitiveness": 532.7668218491809,
+              "retain_quality": 0.5763872491145218,
+              "winrate": 0.385
+            }
+          }
+        }
+      }
+    },
+    "NPO": {
+      "selected_params": {
+        "alpha": 4.094787173883685,
+        "gamma": 0.12339839231169926,
+        "beta": 0.09891887855017602,
+        "retain_loss_type": "NLL"
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 2.5997940107407718e-05,
+        "Llama-3.1-8B-Instruct": 2.5997940107407718e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.6945711314678192,
+              "extraction_strength": 0.08486918000385121,
+              "model_utility": 0.5944626624795493,
+              "privleak": 3.337499999332493,
+              "retain_extraction_strength": 0.5385722380808239
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.45,
+              "mmlu": 0.452642073778664,
+              "repetitiveness": 561.5515213148888,
+              "retain_quality": 0.37668997668997667,
+              "winrate": 0.59
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.709584039002657,
+              "extraction_strength": 0.10023230126054354,
+              "model_utility": 0.5813948732422815,
+              "privleak": -20.38499999592301,
+              "retain_extraction_strength": 0.6436985361806117
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.475,
+              "mmlu": 0.45036319612590797,
+              "repetitiveness": 564.5824049661105,
+              "retain_quality": 0.3835616438356164,
+              "winrate": 0.535
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.7210309004038572,
+              "extraction_strength": 0.10302467523005632,
+              "model_utility": 0.5954668126802871,
+              "privleak": -29.1524999941695,
+              "retain_extraction_strength": 0.7304824721874139
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.4097938144329897,
+              "mmlu": 0.4489388975929355,
+              "repetitiveness": 562.5351004111002,
+              "retain_quality": 0.42384887839433294,
+              "winrate": 0.55
+            }
+          }
+        },
+        "Llama-3.1-8B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.7356197819113731,
+              "extraction_strength": 0.09271189059461718,
+              "model_utility": 0.6999227277578058,
+              "privleak": -16.762499996647513,
+              "retain_extraction_strength": 0.6998399624318702
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.325,
+              "mmlu": 0.6630109670987039,
+              "repetitiveness": 544.2603625462647,
+              "retain_quality": 0.5334867663981587,
+              "winrate": 0.485
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.7676875266432762,
+              "extraction_strength": 0.12303986799049019,
+              "model_utility": 0.6565481436497099,
+              "privleak": 1.1174999997764934,
+              "retain_extraction_strength": 0.8748040007676983
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.5,
+              "mmlu": 0.6628685372454066,
+              "repetitiveness": 548.5646262951633,
+              "retain_quality": 0.6055235903337169,
+              "winrate": 0.53
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.7734273049980402,
+              "extraction_strength": 0.1290252228436618,
+              "model_utility": 0.6602395661455436,
+              "privleak": -7.471249998505745,
+              "retain_extraction_strength": 0.927124155668696
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.5175,
+              "mmlu": 0.66165788349238,
+              "repetitiveness": 550.8977900286634,
+              "retain_quality": 0.6442890442890443,
+              "winrate": 0.485
+            }
+          }
+        }
+      }
+    },
+    "SimNPO": {
+      "selected_params": {
+        "alpha": 1.284870475110989,
+        "gamma": 1.4862885617791477,
+        "beta": 2.822464050600963,
+        "delta": 0.032550905821775444,
+        "retain_loss_type": "NLL"
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 2.0816657948687112e-05,
+        "Llama-3.1-8B-Instruct": 2.859760402038175e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.7307172641158104,
+              "extraction_strength": 0.08703516168500271,
+              "model_utility": 0.5958489947722835,
+              "privleak": -45.874999990824996,
+              "retain_extraction_strength": 0.5744963347858686
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.525,
+              "mmlu": 0.4541375872382851,
+              "repetitiveness": 564.5630578131072,
+              "retain_quality": 0.3825174825174825,
+              "winrate": 0.54
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.7437314519286156,
+              "extraction_strength": 0.12073413223037946,
+              "model_utility": 0.5877212001714943,
+              "privleak": -42.877499991424486,
+              "retain_extraction_strength": 0.6887874444073386
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.5459459459459459,
+              "mmlu": 0.45071927075915114,
+              "repetitiveness": 567.8629462029563,
+              "retain_quality": 0.38796068796068794,
+              "winrate": 0.545
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.7313118943572045,
+              "extraction_strength": 0.10615163726639136,
+              "model_utility": 0.5987097952031836,
+              "privleak": -42.1874999915625,
+              "retain_extraction_strength": 0.738270566497753
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.5743073047858942,
+              "mmlu": 0.4513602050989887,
+              "repetitiveness": 565.6248254575719,
+              "retain_quality": 0.4107655502392344,
+              "winrate": 0.57
+            }
+          }
+        },
+        "Llama-3.1-8B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.712868420779705,
+              "extraction_strength": 0.07950302406961171,
+              "model_utility": 0.6867186911066264,
+              "privleak": 9.774999998045,
+              "retain_extraction_strength": 0.6658813942768598
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.275,
+              "mmlu": 0.6643640507050278,
+              "repetitiveness": 541.2823210451894,
+              "retain_quality": 0.5139860139860141,
+              "winrate": 0.5
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.7308322741091251,
+              "extraction_strength": 0.10222908678152706,
+              "model_utility": 0.6598633479216433,
+              "privleak": 38.69999999226,
+              "retain_extraction_strength": 0.8522208697589193
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.425,
+              "mmlu": 0.6603047998860562,
+              "repetitiveness": 545.3781242916959,
+              "retain_quality": 0.5573426573426574,
+              "winrate": 0.565
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.6830438593029976,
+              "extraction_strength": 0.07694964243904713,
+              "model_utility": 0.68029973520398,
+              "privleak": 56.29374998874124,
+              "retain_extraction_strength": 0.9048365573982838
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.305,
+              "mmlu": 0.657669847600057,
+              "repetitiveness": 541.1208838863325,
+              "retain_quality": 0.634032634032634,
+              "winrate": 0.505
+            }
+          }
+        }
+      }
+    },
+    "JensUn": {
+      "selected_params": {
+        "alpha": 0.7942528090626316,
+        "gamma": 0.8170564885709993,
+        "retain_loss_type": "JensUn"
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 3.9827334615368274e-05,
+        "Llama-3.1-8B-Instruct": 2.659474653238491e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.8875965714454651,
+              "extraction_strength": 0.2954040176654303,
+              "model_utility": 0.5531982933906731,
+              "privleak": -94.36249998112751,
+              "retain_extraction_strength": 0.5995147607981259
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.6,
+              "mmlu": 0.4490101125195841,
+              "repetitiveness": 555.0256994033225,
+              "retain_quality": 0.29159090909090907,
+              "winrate": 0.55
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.260776631552726,
+              "extraction_strength": 0.046905686009431555,
+              "model_utility": 0.2553713600958265,
+              "privleak": 85.0174999829965,
+              "retain_extraction_strength": 0.20759328194389362
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.0,
+              "mmlu": 0.45420880216493376,
+              "repetitiveness": 369.4950077455543,
+              "retain_quality": 0.01142191142191142,
+              "winrate": 0.25
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.0028676290856674315,
+              "extraction_strength": 0.03250892997513522,
+              "model_utility": 0.5738856007412111,
+              "privleak": 99.03999998019202,
+              "retain_extraction_strength": 0.5696500535483732
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.01818181818181818,
+              "mmlu": 0.45079048568579977,
+              "repetitiveness": 343.33117924211314,
+              "retain_quality": 0.3641025641025641,
+              "winrate": 0.235
+            }
+          }
+        },
+        "Llama-3.1-8B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.9750494867563247,
+              "extraction_strength": 0.8868365052011157,
+              "model_utility": 0.6529180863300021,
+              "privleak": -99.7874999800425,
+              "retain_extraction_strength": 0.9788245823003888
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.95,
+              "mmlu": 0.6645064805583251,
+              "repetitiveness": 277.98658019387256,
+              "retain_quality": 0.5757575757575758,
+              "winrate": 0.195
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.0,
+              "extraction_strength": 0.03265219234440614,
+              "model_utility": 0.6993344394688529,
+              "privleak": 99.99999998,
+              "retain_extraction_strength": 0.9235430956884453
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.01,
+              "mmlu": 0.6519726534681669,
+              "repetitiveness": 473.82218618823754,
+              "retain_quality": 0.6119677790563867,
+              "winrate": 0.29
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.0,
+              "extraction_strength": 0.03250892997513522,
+              "model_utility": 0.6624102624579703,
+              "privleak": 99.81124998003774,
+              "retain_extraction_strength": 0.942230257501685
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.02,
+              "mmlu": 0.6533257370744908,
+              "repetitiveness": 236.08422245313187,
+              "retain_quality": 0.6126582278481013,
+              "winrate": 0.11
+            }
+          }
+        }
+      }
+    },
+    "WGA": {
+      "selected_params": {
+        "alpha": 0.7865293167255417,
+        "gamma": 1.1575818188103137,
+        "beta": 2.1353608191419418,
+        "retain_loss_type": "NLL"
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 1.5731290014419735e-05,
+        "Llama-3.1-8B-Instruct": 1.5731290014419735e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.6754868157207966,
+              "extraction_strength": 0.09298515544460409,
+              "model_utility": 0.600414702222408,
+              "privleak": -85.16249998296749,
+              "retain_extraction_strength": 0.6747301916629698
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.8,
+              "mmlu": 0.4521435692921236,
+              "repetitiveness": 559.5027972444627,
+              "retain_quality": 0.3461449942462601,
+              "winrate": 0.585
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.6192707657814026,
+              "extraction_strength": 0.0756660942270026,
+              "model_utility": 0.5990484007220345,
+              "privleak": -81.40499998371902,
+              "retain_extraction_strength": 0.7456572381427286
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.5297297297297298,
+              "mmlu": 0.4497222617860704,
+              "repetitiveness": 567.8723533919427,
+              "retain_quality": 0.4016317016317017,
+              "winrate": 0.49
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.5803302394598723,
+              "extraction_strength": 0.06245587150145529,
+              "model_utility": 0.5962143632774581,
+              "privleak": -71.58749998568253,
+              "retain_extraction_strength": 0.7586719431548109
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.4659400544959128,
+              "mmlu": 0.44965104685942175,
+              "repetitiveness": 568.2885971786297,
+              "retain_quality": 0.3933256616800921,
+              "winrate": 0.56
+            }
+          }
+        },
+        "Llama-3.1-8B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.6492667160928249,
+              "extraction_strength": 0.08009143515582165,
+              "model_utility": 0.6503440927777049,
+              "privleak": -26.187499994762508,
+              "retain_extraction_strength": 0.9070897881569358
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.425,
+              "mmlu": 0.6654322746047572,
+              "repetitiveness": 534.372768490932,
+              "retain_quality": 0.6304604486422668,
+              "winrate": 0.485
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.47561835147440434,
+              "extraction_strength": 0.05789145012769023,
+              "model_utility": 0.6670631269032123,
+              "privleak": 82.11499998357701,
+              "retain_extraction_strength": 0.9314788352889994
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.245,
+              "mmlu": 0.6662868537245407,
+              "repetitiveness": 540.8962812920463,
+              "retain_quality": 0.6358655043586551,
+              "winrate": 0.455
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.5046016102842986,
+              "extraction_strength": 0.04592013334000455,
+              "model_utility": 0.6326665078181751,
+              "privleak": 76.59624998468077,
+              "retain_extraction_strength": 0.9698366675327178
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.33,
+              "mmlu": 0.6596638655462185,
+              "repetitiveness": 549.9487567275931,
+              "retain_quality": 0.6457997698504027,
+              "winrate": 0.6
+            }
+          }
+        }
+      }
+    },
+    "SatImp": {
+      "selected_params": {
+        "alpha": 0.4941055631175225,
+        "gamma": 0.8732969450255544,
+        "beta1": 1.4331770455705362,
+        "beta2": 0.1694580682689411,
+        "retain_loss_type": "NLL"
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 1.9791729019647046e-05,
+        "Llama-3.1-8B-Instruct": 1.9791729019647046e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.6188050106167793,
+              "extraction_strength": 0.08359219040034446,
+              "model_utility": 0.5979116504580726,
+              "privleak": -41.88749999162251,
+              "retain_extraction_strength": 0.6194767586395852
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.55,
+              "mmlu": 0.450932915539097,
+              "repetitiveness": 559.972825577307,
+              "retain_quality": 0.38321678321678326,
+              "winrate": 0.56
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.515660871937871,
+              "extraction_strength": 0.06079307055368422,
+              "model_utility": 0.593791010938665,
+              "privleak": -14.69999999706,
+              "retain_extraction_strength": 0.6898078740699202
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.4787234042553192,
+              "mmlu": 0.4492949722261786,
+              "repetitiveness": 569.2776428027361,
+              "retain_quality": 0.38252656434474613,
+              "winrate": 0.57
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.38472869446501134,
+              "extraction_strength": 0.04265928194661399,
+              "model_utility": 0.5979840567537538,
+              "privleak": 32.164999993567,
+              "retain_extraction_strength": 0.746527214462483
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.26854219948849106,
+              "mmlu": 0.4476570289132602,
+              "repetitiveness": 569.519495208884,
+              "retain_quality": 0.412428078250863,
+              "winrate": 0.55
+            }
+          }
+        },
+        "Llama-3.1-8B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.6618843011558055,
+              "extraction_strength": 0.08265216082194803,
+              "model_utility": 0.6674789871324074,
+              "privleak": 7.7249999984550035,
+              "retain_extraction_strength": 0.8088084106692588
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.425,
+              "mmlu": 0.6657171343113517,
+              "repetitiveness": 524.8110184101552,
+              "retain_quality": 0.5652680652680653,
+              "winrate": 0.415
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.3227592129446566,
+              "extraction_strength": 0.03538664712132291,
+              "model_utility": 0.6678613763866046,
+              "privleak": 92.20249998155948,
+              "retain_extraction_strength": 0.8908793612249556
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.155,
+              "mmlu": 0.6659307790912975,
+              "repetitiveness": 546.4165151254582,
+              "retain_quality": 0.6103896103896104,
+              "winrate": 0.56
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.3555984900705516,
+              "extraction_strength": 0.03464092685800285,
+              "model_utility": 0.6395874267677003,
+              "privleak": 88.12124998237574,
+              "retain_extraction_strength": 0.9517884972484283
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.2125,
+              "mmlu": 0.658809286426435,
+              "repetitiveness": 549.0044910343888,
+              "retain_quality": 0.6575,
+              "winrate": 0.535
+            }
+          }
+        }
+      }
+    },
+    "ATWU": {
+      "selected_params": {
+        "alpha": 0.5,
+        "gamma": 3.0,
+        "beta": 7.0,
+        "scorer_lr": 0.05
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 2e-05,
+        "Llama-3.1-8B-Instruct": 1.5e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.5095227263867855,
+              "extraction_strength": 0.04610031853779582,
+              "mia_min_k": 0.7140625,
+              "model_utility": 0.6024338404407854,
+              "privleak": -42.812499991437505,
+              "ra_Q_A_PERT_Prob": 0.011770379230729306,
+              "ra_Q_A_Prob": 0.030354505657378468,
+              "ra_Q_A_Prob_normalised": 0.4319675304194886,
+              "ra_Q_A_ROUGE": 0.7645000000000001,
+              "ra_Truth_Ratio": 0.5495820531596721,
+              "retain_Q_A_PARA_Prob": 0.09590129082789645,
+              "retain_Q_A_PERT_Prob": 0.04257274191863733,
+              "retain_Q_A_Prob": 0.8108923982828855,
+              "retain_Q_A_ROUGE": 0.6986694527645583,
+              "retain_Truth_Ratio": 0.5154821564796014,
+              "retain_extraction_strength": 0.6036441476615952,
+              "wf_Q_A_PERT_Prob": 0.003942950809254595,
+              "wf_Q_A_Prob": 0.01130190196708348,
+              "wf_Q_A_Prob_normalised": 0.471391837466072,
+              "wf_Q_A_ROUGE": 0.7965811965811966,
+              "wf_Truth_Ratio": 0.6597928648959082
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.525,
+              "mmlu": 0.45079048568579977,
+              "repetitiveness": 556.9238443814729,
+              "retain_quality": 0.365,
+              "winrate": 0.52
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.41417794607579705,
+              "extraction_strength": 0.04090495695453807,
+              "mia_min_k": 0.5820875,
+              "model_utility": 0.6024690378007723,
+              "privleak": -16.417499996716494,
+              "ra_Q_A_PERT_Prob": 0.007324650722777808,
+              "ra_Q_A_Prob": 0.017536395551869647,
+              "ra_Q_A_Prob_normalised": 0.4102101521825032,
+              "ra_Q_A_ROUGE": 0.767,
+              "ra_Truth_Ratio": 0.5306814517656026,
+              "retain_Q_A_PARA_Prob": 0.08406281052157283,
+              "retain_Q_A_PERT_Prob": 0.0362650014977029,
+              "retain_Q_A_Prob": 0.8523457270115614,
+              "retain_Q_A_ROUGE": 0.7746136785248126,
+              "retain_Truth_Ratio": 0.5254342259787004,
+              "retain_extraction_strength": 0.6957927563703457,
+              "wf_Q_A_PERT_Prob": 0.002381267222178296,
+              "wf_Q_A_Prob": 0.006715557992502136,
+              "wf_Q_A_Prob_normalised": 0.4507961129334808,
+              "wf_Q_A_ROUGE": 0.8475783475783476,
+              "wf_Truth_Ratio": 0.6463768230935777
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.375,
+              "mmlu": 0.45107534539239424,
+              "repetitiveness": 573.7436538808308,
+              "retain_quality": 0.37077100115074796,
+              "winrate": 0.605
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.2681476059788838,
+              "extraction_strength": 0.03530649146779941,
+              "mia_min_k": 0.18491875000000002,
+              "model_utility": 0.6015994333374167,
+              "privleak": 63.01624998739675,
+              "ra_Q_A_PERT_Prob": 0.006091118390246113,
+              "ra_Q_A_Prob": 0.015079244078224292,
+              "ra_Q_A_Prob_normalised": 0.40666350255335304,
+              "ra_Q_A_ROUGE": 0.7170000000000001,
+              "ra_Truth_Ratio": 0.548958925943968,
+              "retain_Q_A_PARA_Prob": 0.07431460555322701,
+              "retain_Q_A_PERT_Prob": 0.031340018220459204,
+              "retain_Q_A_Prob": 0.8772415959089994,
+              "retain_Q_A_ROUGE": 0.7994865445408172,
+              "retain_Truth_Ratio": 0.5249736385712815,
+              "retain_extraction_strength": 0.7526790032545378,
+              "wf_Q_A_PERT_Prob": 0.002057871179865522,
+              "wf_Q_A_Prob": 0.005818876100788822,
+              "wf_Q_A_Prob_normalised": 0.44926925764509323,
+              "wf_Q_A_ROUGE": 0.8176638176638177,
+              "wf_Truth_Ratio": 0.6492138430608246
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.145,
+              "mmlu": 0.44993590656601623,
+              "repetitiveness": 574.5493225108538,
+              "retain_quality": 0.4027972027972027,
+              "winrate": 0.515
+            }
+          }
+        },
+        "Llama-3.1-8B-Instruct": {
+          "forget01": {
+            "tofu_summary": {
+              "exact_memorization": 0.6066562257707119,
+              "extraction_strength": 0.06504001653139553,
+              "mia_min_k": 0.6203750000000001,
+              "model_utility": 0.658142787001285,
+              "privleak": -24.074999995185024,
+              "ra_Q_A_PERT_Prob": 0.01062628571889036,
+              "ra_Q_A_Prob": 0.031202672666368017,
+              "ra_Q_A_Prob_normalised": 0.4370371725993962,
+              "ra_Q_A_ROUGE": 0.9590000000000001,
+              "ra_Truth_Ratio": 0.5495652279855804,
+              "retain_Q_A_PARA_Prob": 0.10046042045811192,
+              "retain_Q_A_PERT_Prob": 0.041231459686580214,
+              "retain_Q_A_Prob": 0.9463367547094822,
+              "retain_Q_A_ROUGE": 0.9376163600235272,
+              "retain_Truth_Ratio": 0.5273599832407032,
+              "retain_extraction_strength": 0.8847532403020085,
+              "wf_Q_A_PERT_Prob": 0.00328242219952891,
+              "wf_Q_A_Prob": 0.014972888735875543,
+              "wf_Q_A_Prob_normalised": 0.5214629313403241,
+              "wf_Q_A_ROUGE": 0.9031339031339031,
+              "wf_Truth_Ratio": 0.6757120901528477
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.45,
+              "mmlu": 0.6671414328443241,
+              "repetitiveness": 558.2439617150574,
+              "retain_quality": 0.6475,
+              "winrate": 0.57
+            }
+          },
+          "forget05": {
+            "tofu_summary": {
+              "exact_memorization": 0.14268471154384316,
+              "extraction_strength": 0.032795049487263285,
+              "mia_min_k": 0.06492500000000001,
+              "model_utility": 0.6418936201510702,
+              "privleak": 87.01499998259699,
+              "ra_Q_A_PERT_Prob": 0.007492194132711349,
+              "ra_Q_A_Prob": 0.020153331417131996,
+              "ra_Q_A_Prob_normalised": 0.42577745838491876,
+              "ra_Q_A_ROUGE": 0.9246666666666666,
+              "ra_Truth_Ratio": 0.5513098956344702,
+              "retain_Q_A_PARA_Prob": 0.08108562426874415,
+              "retain_Q_A_PERT_Prob": 0.033546548995056644,
+              "retain_Q_A_Prob": 0.9637450329959393,
+              "retain_Q_A_ROUGE": 0.944290244081374,
+              "retain_Truth_Ratio": 0.5102762076667194,
+              "retain_extraction_strength": 0.9142614007705628,
+              "wf_Q_A_PERT_Prob": 0.002602230804987672,
+              "wf_Q_A_Prob": 0.009099211286470475,
+              "wf_Q_A_Prob_normalised": 0.49064858337925665,
+              "wf_Q_A_ROUGE": 0.8834757834757836,
+              "wf_Truth_Ratio": 0.6448751820773936
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.116751269035533,
+              "mmlu": 0.6677823671841618,
+              "repetitiveness": 541.3806248831559,
+              "retain_quality": 0.6167832167832168,
+              "winrate": 0.485
+            }
+          },
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.041670963088981806,
+              "extraction_strength": 0.03250892997513522,
+              "mia_min_k": 0.02253749999999999,
+              "model_utility": 0.614621332571952,
+              "privleak": 95.4924999809015,
+              "ra_Q_A_PERT_Prob": 0.004664242721276727,
+              "ra_Q_A_Prob": 0.013208743580435112,
+              "ra_Q_A_Prob_normalised": 0.3988477352929175,
+              "ra_Q_A_ROUGE": 0.929,
+              "ra_Truth_Ratio": 0.5075492272706594,
+              "retain_Q_A_PARA_Prob": 0.057084983832901344,
+              "retain_Q_A_PERT_Prob": 0.021434926867472802,
+              "retain_Q_A_Prob": 0.9857110720872879,
+              "retain_Q_A_ROUGE": 0.9788748835356613,
+              "retain_Truth_Ratio": 0.5138766222695955,
+              "retain_extraction_strength": 0.9729020083796627,
+              "wf_Q_A_PERT_Prob": 0.0016019356169874892,
+              "wf_Q_A_Prob": 0.004238343614813315,
+              "wf_Q_A_Prob_normalised": 0.4349516504782121,
+              "wf_Q_A_ROUGE": 0.9031339031339031,
+              "wf_Truth_Ratio": 0.5879481172580768
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.0475,
+              "mmlu": 0.6646489104116223,
+              "repetitiveness": 558.0120308080874,
+              "retain_quality": 0.6543181818181819,
+              "winrate": 0.58
+            }
+          }
+        }
+      }
+    },
+    "ETW": {
+      "selected_params": {
+        "alpha": 1.3088020730642953,
+        "gamma": 0.03289276723974841,
+        "temperature": 0.16217372777368755
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 2.579189614463123e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.6383684596279636,
+              "extraction_strength": 0.10788372193419761,
+              "mia_min_k": 0.43477499999999997,
+              "model_utility": 0.6102395626035204,
+              "privleak": 13.044999997391018,
+              "ra_Q_A_PERT_Prob": 0.004825237200131293,
+              "ra_Q_A_Prob": 0.012367879316661856,
+              "ra_Q_A_Prob_normalised": 0.4216350886325224,
+              "ra_Q_A_ROUGE": 0.7290000000000001,
+              "ra_Truth_Ratio": 0.5580444349853424,
+              "retain_Q_A_PARA_Prob": 0.06290702770042117,
+              "retain_Q_A_PERT_Prob": 0.026210174591586935,
+              "retain_Q_A_Prob": 0.8659400144219398,
+              "retain_Q_A_ROUGE": 0.7756269243126773,
+              "retain_Truth_Ratio": 0.5309252870623159,
+              "retain_extraction_strength": 0.679428671358341,
+              "wf_Q_A_PERT_Prob": 0.0014985811352956936,
+              "wf_Q_A_Prob": 0.004190405724251828,
+              "wf_Q_A_Prob_normalised": 0.4568026215197635,
+              "wf_Q_A_ROUGE": 0.845014245014245,
+              "wf_Truth_Ratio": 0.6610549370479764
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.4275,
+              "mmlu": 0.45534824099131177,
+              "repetitiveness": 560.5626267856107,
+              "retain_quality": 0.389873417721519,
+              "winrate": 0.545
+            }
+          }
+        }
+      }
+    },
+    "RMU": {
+      "selected_params": {
+        "alpha": 1.2724321329631607,
+        "gamma": 0.6589168176056575,
+        "steering_coeff": 4.392722591500382,
+        "layer": 4
+      },
+      "learning_rate_by_model": {
+        "Llama-3.1-8B-Instruct": 0.0002205382727573104
+      },
+      "results": {
+        "Llama-3.1-8B-Instruct": {
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.09659485332900658,
+              "extraction_strength": 0.03307382259885137,
+              "mia_min_k": 0.020931249999999978,
+              "model_utility": 0.6387387472738584,
+              "privleak": 95.81374998083726,
+              "ra_Q_A_PERT_Prob": 0.006503064404510043,
+              "ra_Q_A_Prob": 0.01714062698141788,
+              "ra_Q_A_Prob_normalised": 0.4101836398098978,
+              "ra_Q_A_ROUGE": 0.9540000000000001,
+              "ra_Truth_Ratio": 0.5165506709935163,
+              "retain_Q_A_PARA_Prob": 0.06361593793379143,
+              "retain_Q_A_PERT_Prob": 0.024777870183128742,
+              "retain_Q_A_Prob": 0.9899501740932465,
+              "retain_Q_A_ROUGE": 0.9943404855904856,
+              "retain_Truth_Ratio": 0.5288103255446962,
+              "retain_extraction_strength": 0.98908684931279,
+              "wf_Q_A_PERT_Prob": 0.0018383019745862263,
+              "wf_Q_A_Prob": 0.007677474520912239,
+              "wf_Q_A_Prob_normalised": 0.47989564333619056,
+              "wf_Q_A_ROUGE": 0.8920227920227921,
+              "wf_Truth_Ratio": 0.6424736403580558
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.1275,
+              "mmlu": 0.6526135878080046,
+              "repetitiveness": 539.8086065857444,
+              "retain_quality": 0.6692750287686997,
+              "winrate": 0.505
+            }
+          }
+        }
+      }
+    },
+    "SU-LLM": {
+      "backend_method": "HardScoredGradDiff",
+      "selected_params": {
+        "alpha": 1.6918097982925828,
+        "gamma": 0.12751738005097185,
+        "scoring_method": "su_llm"
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 2.184175169093141e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.7868387855403125,
+              "extraction_strength": 0.19023157396924034,
+              "model_utility": 0.591334739079929,
+              "privleak": -60.90499998781901,
+              "retain_extraction_strength": 0.7043701245845078
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.64,
+              "mmlu": 0.45164506480558325,
+              "repetitiveness": 564.2635216859993,
+              "retain_quality": 0.4121212121212121,
+              "winrate": 0.56
+            }
+          }
+        }
+      }
+    },
+    "SU-Ngram": {
+      "backend_method": "HardScoredGradDiff",
+      "selected_params": {
+        "alpha": 2.2499450099113147,
+        "gamma": 0.2388962010945239,
+        "scoring_method": "su_ngram"
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 2.4359929782589345e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.5456834486871958,
+              "extraction_strength": 0.07445875609030596,
+              "model_utility": 0.5901964349975641,
+              "privleak": 63.134999987372986,
+              "retain_extraction_strength": 0.633819216369695
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.415,
+              "mmlu": 0.452642073778664,
+              "repetitiveness": 560.3768551226975,
+              "retain_quality": 0.36198347107438017,
+              "winrate": 0.515
+            }
+          }
+        }
+      }
+    },
+    "FUNDIAL": {
+      "selected_params": {
+        "gamma": 0.15732285146151986,
+        "alpha": 0.6257056732925156,
+        "beta": 11.613091443806201,
+        "retain_loss_type": "NLL",
+        "mask_type": "noun",
+        "spacy_model": "en_core_web_sm",
+        "empty_mask_fallback": "zero"
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 2.613796415236654e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.5071433176100254,
+              "extraction_strength": 0.046556517215339835,
+              "model_utility": 0.6010809631533601,
+              "privleak": -87.71999998245602,
+              "retain_extraction_strength": 0.7585547420821973
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.55,
+              "mmlu": 0.45164506480558325,
+              "repetitiveness": 562.335726050614,
+              "retain_quality": 0.4059090909090909,
+              "winrate": 0.535
+            }
+          }
+        }
+      }
+    },
+    "SEUL": {
+      "backend_method": "HardScoredGradDiff",
+      "selected_params": {
+        "alpha": 2.1501475962509415,
+        "gamma": 0.10876221205943576,
+        "scoring_method": "seul"
+      },
+      "learning_rate_by_model": {
+        "Llama-3.2-1B-Instruct": 2.265288418574163e-05
+      },
+      "results": {
+        "Llama-3.2-1B-Instruct": {
+          "forget10": {
+            "tofu_summary": {
+              "exact_memorization": 0.6850399003922939,
+              "extraction_strength": 0.10117875119546728,
+              "model_utility": 0.5871373378019247,
+              "privleak": 42.19999999156002,
+              "retain_extraction_strength": 0.6754495674530381
+            },
+            "paraphrase_summary": {
+              "forget_quality": 0.535,
+              "mmlu": 0.45406637231163655,
+              "repetitiveness": 558.8667182985329,
+              "retain_quality": 0.4,
+              "winrate": 0.595
+            }
+          }
+        }
+      }
+    }
+  }
+}

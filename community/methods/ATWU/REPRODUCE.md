@@ -187,5 +187,4 @@ training config.
 
 The whole pipeline (tuning → win-rate baselines → ATWU final runs → all
 baseline final runs → consolidation) is a sequential composition of the steps
-above; a local (untracked) `reproduce_paper_tofu.sh` at the repository root
-can be assembled directly from them, with one stage per section.
+above, with one stage per section.

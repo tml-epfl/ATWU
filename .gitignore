@@ -22,7 +22,13 @@ notebooks/
 output*/
 wandb/
 data/
-!*/data/ 
+!*/data/
+# Track the packaged WMDP benchmark parquet (the git source-of-truth corpora).
+# data/wmdp/generated/*.text.jsonl stays ignored — it is DERIVED from this parquet
+# by scripts/gencorp/materialize_corpora.py. NOTE: *.parquet is git-lfs per the
+# benchmark's .gitattributes, so `git lfs install` is required to commit/clone it.
+!benchmarks/wmdp-generated-v1/data/
+!benchmarks/wmdp-generated-v1/data/**
 evals/
 !*/evals/  
 # Byte-compiled / optimized / DLL files
@@ -189,3 +195,6 @@ cython_debug/
 .idea/
 
 .vscode/
+benchmarks/
+scripts/
+.claude/

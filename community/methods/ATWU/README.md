@@ -1,13 +1,12 @@
 # ATWU — Alternating Token-Weighted Unlearning
 
-- Paper: *Learning What to Forget: Improving LLM Unlearning via Learned Token-Level Importance* — Gizem Yüce⋆, Giorgos Nikolaou⋆, Nicolas Flammarion (EPFL). https://arxiv.org/abs/2606.06320
+**Paper:** Learning What to Forget: Improving LLM Unlearning via Learned Token-Level Importance - Gizem Yüce<sup>&lowast;</sup>, Giorgos Nikolaou<sup>&lowast;</sup>, Nicolas Flammarion (EPFL). https://arxiv.org/abs/2606.06320
 
 ATWU is an unlearning method that reweights the per-token forget loss with a small learned scorer. A one-layer MLP maps the model's last-layer hidden states to per-token importance weights in [0, 1]; the forget objective is the negated, scorer-weighted, saturation-dampened NLL (the saturation term `exp(-nll)^(beta * score)` suppresses gradient ascent on tokens that are already forgotten), combined with a standard retain NLL:
 
 ```
 L = alpha * retain_NLL - gamma * weighted_forget_NLL
 ```
-
 The scorer is co-trained during unlearning by a dedicated `ScorerTrainerATWU` (matched forget objective plus entropy, population-budget, and L2 penalties on the scores), updated every `update_every_n_steps` model optimizer steps with its own SGD optimizer and (optionally) a linear schedule.
 
 Key code:
@@ -61,3 +60,14 @@ To reproduce any paper method (including the baselines) with the frozen selected
 hyperparameters from `scripts/selected_tofu.json`, use `scripts/reproduce_tofu.py`;
 the full end-to-end protocol is documented in [`REPRODUCE.md`](REPRODUCE.md)
 (in this directory).
+
+## Citation
+
+```bibtex
+@article{yuce2026learning,
+  title={Learning What to Forget: Improving LLM Unlearning via Learned Token-Level Importance},
+  author={Y{\"u}ce, Gizem and Nikolaou, Giorgos and Flammarion, Nicolas},
+  journal={arXiv preprint arXiv:2606.06320},
+  year={2026}
+}
+```

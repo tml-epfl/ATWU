@@ -1,7 +1,5 @@
 {
   "metadata": {
-    "description": "Selected hyperparameters reported in tab:hp-tofu-selected (TOFU). Pulled from training_config of the final-run records in TOFU/results/final_runs_short.json (forget10 split for both 1B and 8B models). 1B model = Llama-3.2-1B-Instruct, 8B model = Llama-3.1-8B-Instruct. ETW values pulled from results_archive/final_runs_etw_short.json (1B only) with temperature from hyperparam/TOFU/bayesian_summary.json (key ETW); RMU values pulled from hyperparam/TOFU/bayesian_summary.json (key RMU_8B, 8B only). Schema fields steering_coeff/layer (RMU) and temperature (ETW) are null for all other methods.",
-    "source_file": "TOFU/results/final_runs_short.json",
     "source_split": "forget10",
     "models": {
       "1B": "Llama-3.2-1B-Instruct",

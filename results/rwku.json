@@ -1,0 +1,556 @@
+{
+  "schema_version": 1,
+  "benchmark": "RWKU",
+  "model": "microsoft/Phi-3-mini-4k-instruct",
+  "description": "Selected hyperparameters and aggregate results for the canonical 10-target RWKU batch-unlearning experiment.",
+  "setting": {
+    "targets": "canonical 10-subject batch",
+    "forget_probe_levels": {
+      "level1": "fill-in-the-blank probes",
+      "level2": "direct question-answer probes",
+      "level3": "ADVERSARIAL ATTACK probes (RWKU's attack suite: role-play/persona, in-context reasoning, misleading premise, multi-hop / indirect elicitation of the forgotten fact)"
+    },
+    "neighbor_probe_levels": {
+      "level1": "fill-in-the-blank probes on neighbor subjects",
+      "level2": "question-answer probes on neighbor subjects"
+    }
+  },
+  "aggregation": {
+    "unit": "RWKU probes across the canonical 10 targets",
+    "note": "The reported values are target/probe aggregates, not repeated random-seed runs; targets must not be interpreted as seeds."
+  },
+  "metric_definitions": {
+    "rwku_rouge_L_recall": "Standard RWKU metric: ROUGE-L recall of greedy generations against the gold answer. Lower is better on forget, higher on neighbor. R-LF = mean(forget L1,L2,L3); R-LN = mean(neighbor L1,L2); N_delta = R-LN - R-LF.",
+    "J_P": "Judge accuracy under the PARAPHRASE attack: each probe is asked in its original form plus 9 LLM paraphrases; a sample counts as recalled if ANY variant elicits the gold fact (worst-case over paraphrases). LLM judge = gpt-5.4-mini, greedy decoding, 64 new tokens, 100 samples/level.",
+    "J_ICR": "Judge accuracy under the IN-CONTEXT-RETENTION attack: the same probes prefixed with 3 neighbor-subject QA pairs as few-shot context, again worst-case over the paraphrase set.",
+    "J_W": "Worst-case over the union of the paraphrase and ICR attack variants — i.e. the sample counts as NOT forgotten if any of the ~20 attacked prompts elicits the fact. This is the quantity the paper's FQ is built from.",
+    "J_avg": "Average-case judge accuracy on neighbor (retain) probes; higher is better.",
+    "FQ": "100 * (J_W_original - J_W_method) / J_W_original, with J_W averaged over forget levels 1-3. Higher = more forgetting. Matches the paper's FQ column.",
+    "RD": "100 * (J_avg_original - J_avg_method) / J_avg_original, averaged over neighbor levels 1-2. Lower = less collateral damage. Matches paper RD.",
+    "UQ": "[FQ - RD]_+ . Matches the paper's UQ column.",
+    "FQ_level3": "FQ recomputed using only the adversarial-attack forget level.",
+    "repetitiveness": "n-gram entropy x100 over 1000 RWKU utility_fluency generations; higher = less degenerate.",
+    "winrate_vs_original": "LLM-judge win rate of the unlearned model vs the original checkpoint on the same open-ended generations; 0.5 = parity."
+  },
+  "notes": [
+    "RMU has no RWKU run and is reported as '—' in the paper.",
+    "The judge-based J_P, J_ICR, and J_W values use 100 samples per level; the ROUGE metrics use the full RWKU probe sets."
+  ],
+  "methods": {
+    "ORIGINAL": {
+      "results": {
+        "rwku_rouge_L_recall": {
+          "forget_level1": 0.6763333333333332,
+          "forget_level2": 0.649448123620309,
+          "forget_level3": 0.7221326164874552,
+          "neighbor_level1": 0.7833333333333333,
+          "neighbor_level2": 0.7351789709172258,
+          "forget_mean_R_LF": 0.6826380244803658,
+          "neighbor_mean_R_LN": 0.7592561521252796,
+          "N_delta": 0.07661812764491382
+        },
+        "paraphrase_judge_quality": {
+          "forget_level1": {
+            "J_P": 0.8070175438596491,
+            "J_ICR": 0.8362573099415205,
+            "J_W": 0.8771929824561403
+          },
+          "forget_level2": {
+            "J_P": 0.676056338028169,
+            "J_ICR": 0.7535211267605634,
+            "J_W": 0.7746478873239436
+          },
+          "forget_level3": {
+            "J_P": 0.8440860215053764,
+            "J_ICR": 0.8467741935483871,
+            "J_W": 0.8924731182795699
+          },
+          "retain_level1": {
+            "J_avg": 0.6313131313131313
+          },
+          "retain_level2": {
+            "J_avg": 0.6839622641509434
+          },
+          "forget_mean_J_W": 0.8481046626865513,
+          "retain_mean_J_avg": 0.6576376977320373
+        },
+        "utility": {
+          "mmlu": 0.7008973080757727,
+          "repetitiveness": 528.7285546919126,
+          "winrate_vs_original": 0.5
+        },
+        "paper_metrics_percent": {
+          "FQ": 0.0,
+          "RD": 0.0,
+          "UQ": 0.0,
+          "FQ_level3": 0.0
+        }
+      }
+    },
+    "GRADDIFF": {
+      "backend_method": "GradDiff",
+      "selected_trial": 4,
+      "selected_params": {
+        "gamma": 0.11636609561681736,
+        "alpha": 0.7972014659988814,
+        "lr": 1.18e-06
+      },
+      "results": {
+        "rwku_rouge_L_recall": {
+          "forget_level1": 0.035,
+          "forget_level2": 0.02097130242825607,
+          "forget_level3": 0.10349462365591398,
+          "neighbor_level1": 0.415,
+          "neighbor_level2": 0.4746085011185682,
+          "forget_mean_R_LF": 0.053155308694723354,
+          "neighbor_mean_R_LN": 0.4448042505592841,
+          "N_delta": 0.39164894186456073
+        },
+        "paraphrase_judge_quality": {
+          "forget_level1": {
+            "J_P": 0.08771929824561403,
+            "J_ICR": 0.11695906432748537,
+            "J_W": 0.14619883040935672
+          },
+          "forget_level2": {
+            "J_P": 0.04225352112676056,
+            "J_ICR": 0.08450704225352113,
+            "J_W": 0.08450704225352113
+          },
+          "forget_level3": {
+            "J_P": 0.1557377049180328,
+            "J_ICR": 0.18032786885245902,
+            "J_W": 0.22950819672131148
+          },
+          "retain_level1": {
+            "J_avg": 0.3838383838383838
+          },
+          "retain_level2": {
+            "J_avg": 0.4481132075471698
+          },
+          "forget_mean_J_W": 0.15340468979472976,
+          "retain_mean_J_avg": 0.4159757956927768
+        },
+        "utility": {
+          "mmlu": 0.6917105825381,
+          "repetitiveness": 514.0365746695448,
+          "winrate_vs_original": 0.43
+        },
+        "paper_metrics_percent": {
+          "FQ": 81.91205678450252,
+          "RD": 36.74696612932439,
+          "UQ": 45.16509065517813,
+          "FQ_level3": 74.28402133122654
+        }
+      }
+    },
+    "DPO": {
+      "backend_method": "DPORetain",
+      "selected_trial": 1,
+      "selected_params": {
+        "gamma": 0.1255111517297383,
+        "alpha": 2.962151658830348,
+        "beta": 0.3469266868719914,
+        "lr": 1.1844319751820392e-05
+      },
+      "results": {
+        "rwku_rouge_L_recall": {
+          "forget_level1": 0.478,
+          "forget_level2": 0.46832229580573953,
+          "forget_level3": 0.551747311827957,
+          "neighbor_level1": 0.5811111111111111,
+          "neighbor_level2": 0.5981064237775647,
+          "forget_mean_R_LF": 0.49935653587789885,
+          "neighbor_mean_R_LN": 0.589608767444338,
+          "N_delta": 0.09025223156643913
+        },
+        "paraphrase_judge_quality": {
+          "forget_level1": {
+            "J_P": 0.6488095238095238,
+            "J_ICR": 0.7380952380952381,
+            "J_W": 0.7857142857142857
+          },
+          "forget_level2": {
+            "J_P": 0.5915492957746479,
+            "J_ICR": 0.5845070422535211,
+            "J_W": 0.6690140845070423
+          },
+          "forget_level3": {
+            "J_P": 0.696236559139785,
+            "J_ICR": 0.7231182795698925,
+            "J_W": 0.7768817204301075
+          },
+          "retain_level1": {
+            "J_avg": 0.5303030303030303
+          },
+          "retain_level2": {
+            "J_avg": 0.5613207547169812
+          },
+          "forget_mean_J_W": 0.7438700302171452,
+          "retain_mean_J_avg": 0.5458118925100057
+        },
+        "utility": {
+          "mmlu": 0.6965531975502065,
+          "repetitiveness": 522.5733871333421,
+          "winrate_vs_original": 0.43
+        },
+        "paper_metrics_percent": {
+          "FQ": 12.2903029608658,
+          "RD": 17.00416591197246,
+          "UQ": 0.0,
+          "FQ_level3": 12.951807228915664
+        }
+      }
+    },
+    "NPO": {
+      "backend_method": "NPORetain",
+      "selected_trial": 1,
+      "selected_params": {
+        "gamma": 4.760464213464787,
+        "alpha": 0.6337337277472271,
+        "beta": 0.07055033062675105,
+        "lr": 2.6e-05
+      },
+      "results": {
+        "rwku_rouge_L_recall": {
+          "forget_level1": 0.2663333333333333,
+          "forget_level2": 0.1816461684011353,
+          "forget_level3": 0.26120071684587814,
+          "neighbor_level1": 0.5005555555555555,
+          "neighbor_level2": 0.5820469798657718,
+          "forget_mean_R_LF": 0.23639340619344892,
+          "neighbor_mean_R_LN": 0.5413012677106637,
+          "N_delta": 0.3049078615172147
+        },
+        "paraphrase_judge_quality": {
+          "forget_level1": {
+            "J_P": 0.42105263157894735,
+            "J_ICR": 0.4444444444444444,
+            "J_W": 0.49707602339181284
+          },
+          "forget_level2": {
+            "J_P": 0.2887323943661972,
+            "J_ICR": 0.36619718309859156,
+            "J_W": 0.3873239436619718
+          },
+          "forget_level3": {
+            "J_P": 0.31989247311827956,
+            "J_ICR": 0.3844086021505376,
+            "J_W": 0.4489247311827957
+          },
+          "retain_level1": {
+            "J_avg": 0.35353535353535354
+          },
+          "retain_level2": {
+            "J_avg": 0.4481132075471698
+          },
+          "forget_mean_J_W": 0.4444415660788601,
+          "retain_mean_J_avg": 0.4008242805412617
+        },
+        "utility": {
+          "mmlu": 0.6810283435408061,
+          "repetitiveness": 543.1839172245853,
+          "winrate_vs_original": 0.335
+        },
+        "paper_metrics_percent": {
+          "FQ": 47.595905831834806,
+          "RD": 39.05089657670711,
+          "UQ": 8.545009255127695,
+          "FQ_level3": 49.69879518072289
+        }
+      }
+    },
+    "SIMNPO": {
+      "backend_method": "SimNPO",
+      "selected_trial": 1,
+      "selected_params": {
+        "gamma": 2.425865794866676,
+        "alpha": 0.45769503220349295,
+        "beta": 2.5910457592264704,
+        "delta": 1.501265920089647,
+        "lr": 2.08e-05
+      },
+      "results": {
+        "rwku_rouge_L_recall": {
+          "forget_level1": 0.18591666666666667,
+          "forget_level2": 0.19358246609902235,
+          "forget_level3": 0.2752688172043011,
+          "neighbor_level1": 0.561111111111111,
+          "neighbor_level2": 0.5610738255033557,
+          "forget_mean_R_LF": 0.21825598332333004,
+          "neighbor_mean_R_LN": 0.5610924683072334,
+          "N_delta": 0.3428364849839033
+        },
+        "paraphrase_judge_quality": {
+          "forget_level1": {
+            "J_P": 0.2982456140350877,
+            "J_ICR": 0.3333333333333333,
+            "J_W": 0.40350877192982454
+          },
+          "forget_level2": {
+            "J_P": 0.24647887323943662,
+            "J_ICR": 0.31690140845070425,
+            "J_W": 0.36619718309859156
+          },
+          "forget_level3": {
+            "J_P": 0.3172043010752688,
+            "J_ICR": 0.3924731182795699,
+            "J_W": 0.45698924731182794
+          },
+          "retain_level1": {
+            "J_avg": 0.43434343434343436
+          },
+          "retain_level2": {
+            "J_avg": 0.49056603773584906
+          },
+          "forget_mean_J_W": 0.40889840078008133,
+          "retain_mean_J_avg": 0.4624547360396417
+        },
+        "utility": {
+          "mmlu": 0.687508901865831,
+          "repetitiveness": 529.4513274654281,
+          "winrate_vs_original": 0.455
+        },
+        "paper_metrics_percent": {
+          "FQ": 51.78679958145626,
+          "RD": 29.679405904727396,
+          "UQ": 22.10739367672886,
+          "FQ_level3": 48.795180722891565
+        }
+      }
+    },
+    "JENSUN": {
+      "backend_method": "JensUn",
+      "selected_trial": 1,
+      "selected_params": {
+        "gamma": 0.38849647928443715,
+        "alpha": 1.5209428026700984,
+        "lr": 1.5355286838886863e-06
+      },
+      "results": {
+        "rwku_rouge_L_recall": {
+          "forget_level1": 0.0475,
+          "forget_level2": 0.028697571743929364,
+          "forget_level3": 0.11021505376344086,
+          "neighbor_level1": 0.4066666666666667,
+          "neighbor_level2": 0.46140939597315433,
+          "forget_mean_R_LF": 0.062137541835790074,
+          "neighbor_mean_R_LN": 0.4340380313199105,
+          "N_delta": 0.3719004894841204
+        },
+        "paraphrase_judge_quality": {
+          "forget_level1": {
+            "J_P": 0.08187134502923976,
+            "J_ICR": 0.06432748538011696,
+            "J_W": 0.08187134502923976
+          },
+          "forget_level2": {
+            "J_P": 0.056338028169014086,
+            "J_ICR": 0.056338028169014086,
+            "J_W": 0.06338028169014084
+          },
+          "forget_level3": {
+            "J_P": 0.1639784946236559,
+            "J_ICR": 0.17473118279569894,
+            "J_W": 0.22580645161290322
+          },
+          "retain_level1": {
+            "J_avg": 0.36363636363636365
+          },
+          "retain_level2": {
+            "J_avg": 0.47641509433962265
+          },
+          "forget_mean_J_W": 0.12368602611076128,
+          "retain_mean_J_avg": 0.4200257289879932
+        },
+        "utility": {
+          "mmlu": 0.7022503916820966,
+          "repetitiveness": 522.9807014213482,
+          "winrate_vs_original": 0.465
+        },
+        "paper_metrics_percent": {
+          "FQ": 85.41618369141379,
+          "RD": 36.131135663829006,
+          "UQ": 49.285048027584786,
+          "FQ_level3": 74.69879518072288
+        }
+      }
+    },
+    "WGA": {
+      "backend_method": "WGA",
+      "selected_trial": 1,
+      "selected_params": {
+        "gamma": 2.7930308805951136,
+        "alpha": 0.22041246288317767,
+        "beta": 0.40270619190168494,
+        "lr": 1.5355286838886863e-06
+      },
+      "results": {
+        "rwku_rouge_L_recall": {
+          "forget_level1": 0.0525,
+          "forget_level2": 0.03863134657836644,
+          "forget_level3": 0.0925179211469534,
+          "neighbor_level1": 0.49444444444444446,
+          "neighbor_level2": 0.5357941834451901,
+          "forget_mean_R_LF": 0.061216422575106615,
+          "neighbor_mean_R_LN": 0.5151193139448174,
+          "N_delta": 0.45390289136971074
+        },
+        "paraphrase_judge_quality": {
+          "forget_level1": {
+            "J_P": 0.1286549707602339,
+            "J_ICR": 0.16374269005847952,
+            "J_W": 0.21052631578947367
+          },
+          "forget_level2": {
+            "J_P": 0.050359712230215826,
+            "J_ICR": 0.12949640287769784,
+            "J_W": 0.12949640287769784
+          },
+          "forget_level3": {
+            "J_P": 0.13172043010752688,
+            "J_ICR": 0.18010752688172044,
+            "J_W": 0.22043010752688172
+          },
+          "retain_level1": {
+            "J_avg": 0.4393939393939394
+          },
+          "retain_level2": {
+            "J_avg": 0.5330188679245284
+          },
+          "forget_mean_J_W": 0.1868176087313511,
+          "retain_mean_J_avg": 0.48620640365923384
+        },
+        "utility": {
+          "mmlu": 0.6936333855576129,
+          "repetitiveness": 518.0664342426082,
+          "winrate_vs_original": 0.41
+        },
+        "paper_metrics_percent": {
+          "FQ": 77.97234033125501,
+          "RD": 26.067741351204486,
+          "UQ": 51.90459898005052,
+          "FQ_level3": 75.3012048192771
+        }
+      }
+    },
+    "SATIMP": {
+      "backend_method": "SatImp",
+      "selected_trial": 3,
+      "selected_params": {
+        "gamma": 2.595942550311263,
+        "alpha": 0.22948683681130552,
+        "beta1": 2.636424704863906,
+        "beta2": 0.20492680115417347,
+        "lr": 4.480392682684056e-06
+      },
+      "results": {
+        "rwku_rouge_L_recall": {
+          "forget_level1": 0.04666666666666666,
+          "forget_level2": 0.047524440239672026,
+          "forget_level3": 0.11223118279569892,
+          "neighbor_level1": 0.5680555555555555,
+          "neighbor_level2": 0.4985298817513583,
+          "forget_mean_R_LF": 0.0688074299006792,
+          "neighbor_mean_R_LN": 0.533292718653457,
+          "N_delta": 0.4644852887527777
+        },
+        "paraphrase_judge_quality": {
+          "forget_level1": {
+            "J_P": 0.16374269005847952,
+            "J_ICR": 0.15789473684210525,
+            "J_W": 0.19883040935672514
+          },
+          "forget_level2": {
+            "J_P": 0.07042253521126761,
+            "J_ICR": 0.09859154929577464,
+            "J_W": 0.11267605633802817
+          },
+          "forget_level3": {
+            "J_P": 0.15591397849462366,
+            "J_ICR": 0.22849462365591397,
+            "J_W": 0.2661290322580645
+          },
+          "retain_level1": {
+            "J_avg": 0.4444444444444444
+          },
+          "retain_level2": {
+            "J_avg": 0.4858490566037736
+          },
+          "forget_mean_J_W": 0.1925451659842726,
+          "retain_mean_J_avg": 0.46514675052410903
+        },
+        "utility": {
+          "mmlu": 0.6978350662298818,
+          "repetitiveness": 518.0540594664668,
+          "winrate_vs_original": 0.4
+        },
+        "paper_metrics_percent": {
+          "FQ": 77.29700419588013,
+          "RD": 29.270059771780467,
+          "UQ": 48.02694442409967,
+          "FQ_level3": 70.18072289156626
+        }
+      }
+    },
+    "ATWU": {
+      "backend_method": "SBGradDiffScored",
+      "selected_trial": 0,
+      "selected_params": {
+        "gamma": 2.675977423393359,
+        "alpha": 0.5366954083773045,
+        "beta": 2.247092542397331,
+        "scorer_lr": 0.020280939405347902,
+        "lr": 1.8264764153005697e-06
+      },
+      "results": {
+        "rwku_rouge_L_recall": {
+          "forget_level1": 0.055,
+          "forget_level2": 0.024282560706401765,
+          "forget_level3": 0.07168458781362007,
+          "neighbor_level1": 0.5716666666666666,
+          "neighbor_level2": 0.5530249280920422,
+          "forget_mean_R_LF": 0.05032238284000728,
+          "neighbor_mean_R_LN": 0.5623457973793544,
+          "N_delta": 0.5120234145393471
+        },
+        "paraphrase_judge_quality": {
+          "forget_level1": {
+            "J_P": 0.1286549707602339,
+            "J_ICR": 0.15204678362573099,
+            "J_W": 0.17543859649122806
+          },
+          "forget_level2": {
+            "J_P": 0.04316546762589928,
+            "J_ICR": 0.09352517985611511,
+            "J_W": 0.10071942446043165
+          },
+          "forget_level3": {
+            "J_P": 0.14363143631436315,
+            "J_ICR": 0.17073170731707318,
+            "J_W": 0.1978319783197832
+          },
+          "retain_level1": {
+            "J_avg": 0.47474747474747475
+          },
+          "retain_level2": {
+            "J_avg": 0.5424528301886793
+          },
+          "forget_mean_J_W": 0.1579966664238143,
+          "retain_mean_J_avg": 0.508600152468077
+        },
+        "utility": {
+          "mmlu": 0.703318615581826,
+          "repetitiveness": 518.7850615900696,
+          "winrate_vs_original": 0.46
+        },
+        "paper_metrics_percent": {
+          "FQ": 81.37061693266413,
+          "RD": 22.66256113023002,
+          "UQ": 58.70805580243412,
+          "FQ_level3": 77.83328435693996
+        }
+      }
+    }
+  }
+}
